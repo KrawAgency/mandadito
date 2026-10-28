@@ -73,7 +73,8 @@ Anota en `tandas.md` qué grupos quedaron.
   (etiqueta de anaquel, otra cosa). Para `no_ticket` basta `id`, `fotos`,
   `tipo` y en `dudas` qué es.
 - `tienda`: clave de `comun.TIENDAS` (costco, walmart, chedraui, chedpm,
-  aki, ml, pachamama, oceanleader, multiproteinas). Chedraui de Puerto
+  aki, ml, pachamama, oceanleader, multiproteinas, aurrera, similares,
+  delsol, oxxo, gomart, velvet). Chedraui de Puerto
   Morelos es `chedpm`; los de Cancún son `chedraui`. Si es otra tienda,
   inventa una clave corta en minúsculas y explícalo en `dudas`.
 - `fecha` **impresa en el ticket**, en `AAAA-MM-DD`. Nunca la del nombre
