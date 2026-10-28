@@ -22,6 +22,12 @@ deducir de los propios registros.
      unifican al nombre más usado.
   6. Siembra equivalencias/{tienda}/{TEXTO} y codigos/{ean} con lo que ya
      está en notas ("Ticket: MAN GALA", "Código 6584800002368").
+  7. Días capturados dos veces (a mano, claves t0xxx, y en la importación
+     t_1781590041567): se queda la importación solo si su suma da
+     exactamente el total de las sesiones de ese día; la captura a mano de
+     esos días trae el precio por kilo en lugar del importe.
+  8. "Agua a granel" de Pachamama era el ticket cortado ("AGUA" a $75-105/kg):
+     es aguacate.
 
 Uso:
     python limpiar_historico.py            (modo prueba: muestra y no escribe)
@@ -145,6 +151,33 @@ def main():
             if ean not in codigos:
                 cambios[f"codigos/{ean}"] = {"producto": nombre, "tienda": t["tienda"], "origen": "historico"}
                 bitacora["6_codigos"].append(f"{ean} -> {nombre}")
+
+    # 7. Días capturados dos veces
+    por_lote = defaultdict(lambda: defaultdict(list))
+    for k, t in vivos.items():
+        if t.get("tipo") == "compra" and f"tickets/{k}" not in cambios:
+            lote = "manual" if k.startswith("t0") else k.rsplit("_", 1)[0]
+            por_lote[(t["tienda"], t["fecha"])][lote].append(k)
+    for (tienda, fecha), lotes in por_lote.items():
+        if "manual" not in lotes or LOTE_DUPLICADO not in lotes:
+            continue
+        total_dia = sum(s["total"] for s in vivas.values() if s["tienda"] == tienda and s["fecha"] == fecha)
+        suma_lote = sum(vivos[k]["precio"] * (vivos[k]["cantidad"] or 1) for k in lotes[LOTE_DUPLICADO])
+        if total_dia and abs(suma_lote - total_dia) <= 0.05:
+            for k in lotes["manual"]:
+                cambios[f"tickets/{k}"] = None
+                bitacora["7_dia_duplicado_borrado"].append({"key": k, **vivos[k]})
+
+    # 8. "Agua a granel" -> aguacate
+    for k, t in vivos.items():
+        if t["producto"] == "Agua a granel" and f"tickets/{k}" not in cambios:
+            cambios[f"tickets/{k}/producto"] = "Aguacate Hass a granel"
+            cambios[f"tickets/{k}/categoria"] = "Frutas y Verduras"
+            bitacora["8_agua_aguacate"].append(k)
+    for k, c in (datos.get("catalogo") or {}).items():
+        if c["producto"] == "Agua a granel":
+            cambios[f"catalogo/{k}"] = None
+            bitacora["8_agua_aguacate"].append(f"catalogo/{k}")
 
     # --- Reporte ---
     for nombre_regla, items in bitacora.items():
