@@ -324,6 +324,48 @@
     .lista-layout { grid-template-columns: 1fr; }
     .ruta-box { position: static; }
   }
+
+  /* ══════════════════════════════════════════════════════
+     MÓDULO: PENDIENTES (tickets por foto)
+  ══════════════════════════════════════════════════════ */
+  .pend-lista { display:flex; flex-direction:column; gap:10px; padding:16px; }
+  .pend-vacia { text-align:center; padding:32px 16px; color:var(--text3); font-size:14px; border:1px dashed var(--border); border-radius:10px; }
+  .pend-card { background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:12px 14px; cursor:pointer; display:flex; flex-direction:column; gap:6px; }
+  .pend-card:hover { border-color:var(--accent); }
+  .pend-card-top { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .pend-card-total { font-size:17px; font-weight:700; color:var(--accent); }
+  .pend-card-sub { font-size:13px; color:var(--text3); }
+  .pend-chips { display:flex; flex-wrap:wrap; gap:6px; }
+  .pend-chip { font-size:11px; padding:2px 8px; border-radius:10px; background:var(--surface2); color:var(--text2); border:1px solid var(--border); }
+  .pend-chip.ok   { color:var(--green); border-color:rgba(76,175,125,0.35); }
+  .pend-chip.warn { color:#f5a623; border-color:rgba(245,166,35,0.35); }
+  .pend-chip.dup  { color:var(--purple); border-color:rgba(155,127,232,0.35); }
+  .pend-modal { max-width:760px; }
+  .pend-banner { border-radius:10px; padding:10px 12px; font-size:13px; line-height:1.45; }
+  .pend-banner.warn { background:rgba(245,166,35,0.08); border:1px solid rgba(245,166,35,0.4); color:var(--text2); }
+  .pend-banner.info { background:var(--surface2); border:1px solid var(--border); color:var(--text2); }
+  .pend-banner.dup  { background:rgba(155,127,232,0.08); border:1px solid rgba(155,127,232,0.4); color:var(--text2); }
+  .pend-banner ul { margin:4px 0 0 18px; }
+  .pend-fotos img { width:100%; border-radius:8px; margin-top:8px; display:block; }
+  .pend-item { background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:10px 12px; display:flex; flex-direction:column; gap:7px; }
+  .pend-item.baja { border-color:rgba(245,166,35,0.55); }
+  .pend-item.quitado { opacity:0.4; }
+  .pend-item-texto { font-family:ui-monospace,Consolas,monospace; font-size:12px; color:var(--text3); display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap; }
+  .pend-match { font-size:10px; padding:1px 7px; border-radius:8px; font-weight:700; letter-spacing:0.03em; font-family:'Plus Jakarta Sans',sans-serif; }
+  .pend-match.codigo, .pend-match.equivalencia { background:rgba(76,175,125,0.15); color:var(--green); }
+  .pend-match.catalogo { background:rgba(79,142,247,0.15); color:var(--accent); }
+  .pend-match.nuevo { background:rgba(245,166,35,0.15); color:#f5a623; }
+  .pend-item-fila { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .pend-item-fila .edit-label { display:flex; flex-direction:column; gap:3px; }
+  .tab-cuenta { position:absolute; top:4px; margin-left:16px; background:var(--accent); color:#fff; font-size:10px; font-weight:700; border-radius:9px; padding:0 5px; line-height:16px; }
+  .pend-cand { font-size:12px; padding:3px 9px; border-radius:12px; border:1px solid var(--border); background:var(--bg); color:var(--text2); cursor:pointer; }
+  .pend-cand.sug { border-color:var(--green); color:var(--green); }
+  .pend-item-pie { display:flex; justify-content:space-between; align-items:center; gap:8px; font-size:12px; color:var(--text3); }
+  .pend-toast { position:fixed; left:50%; bottom:calc(var(--tab-height) + 16px); transform:translateX(-50%); background:var(--surface2); border:1px solid var(--border); color:var(--text); padding:10px 16px; border-radius:10px; font-size:14px; z-index:950; box-shadow:0 8px 28px rgba(0,0,0,0.5); }
+  @media (max-width: 600px) {
+    .edit-overlay { padding:0; }
+    .pend-modal { max-height:100vh; height:100vh; border-radius:0; }
+  }
 </style>
 </head>
 <body>
@@ -716,6 +758,7 @@ function construirBloqueSección(config) {
 // Configuración de cada sección de la app
 var SECCIONES = [
   { id: 'lista',    nombre: 'Lista de compras',  icono: '📋', color: 'var(--accent)', tieneFilters: false },
+  { id: 'pendientes', nombre: 'Pendientes por aprobar', icono: '📥', color: 'var(--accent)', tieneFilters: false },
   { id: 'tickets',  nombre: 'Tickets',            icono: '🧾', color: 'var(--green)',  tieneFilters: true },
   { id: 'catalogo', nombre: 'Catálogo precios',   icono: '📦', color: 'var(--accent)', tieneFilters: true },
   { id: 'resumen',  nombre: 'Resumen',            icono: '📊', color: 'var(--blue)',   tieneFilters: false },
@@ -735,6 +778,10 @@ function actualizarSeccion(idSeccion) {
   if (idSeccion === 'lista') {
     // El módulo lista se renderiza con su propio sistema — no usa tabla
     renderModuloLista();
+    return;
+  } else if (idSeccion === 'pendientes') {
+    // Igual que la lista: el módulo pinta su propio contenido
+    pendRender();
     return;
   } else if (idSeccion === 'tickets') {
     var resultado = renderTablaTickets(filtroTexto, filtroTienda);
@@ -2274,6 +2321,313 @@ function regCerrar() {
 // ══════════════════════════════════════════════════════════════
 // ARRANQUE
 // ══════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════
+// MÓDULO: PENDIENTES (tickets por foto)
+// Los tickets llegan a pipeline/pendientes desde tools/subir.py.
+// Aprobar los pasa a pipeline/aprobados (los escribe tools/aplicar.py,
+// con respaldo); Quitar los pasa a pipeline/descartados.
+// La app nunca escribe aquí en tickets/, sesiones/ ni catalogo/.
+// ══════════════════════════════════════════════════════════════
+var PEND = null;        // { id: ticket } tal como está en pipeline/pendientes
+var pendId = null;      // id del ticket abierto
+var pendEdit = null;    // copia editable del ticket abierto
+
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function(c) {
+    return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+  });
+}
+
+function pendFechaCorta(iso) {
+  var p = String(iso || '').split('-');
+  return p.length === 3 ? p[2] + '/' + p[1] + '/' + p[0] : iso;
+}
+
+// Nombres conocidos para el autocompletado (catálogo + tickets)
+function pendNombresConocidos() {
+  var vistos = {};
+  CATALOGO.concat(TICKETS).forEach(function(r) { if (r.producto) vistos[r.producto] = 1; });
+  return Object.keys(vistos).sort(function(a, b) { return a.localeCompare(b, 'es'); });
+}
+
+function pendSuma(t) {
+  return (t.items || []).reduce(function(acc, i) {
+    return i.quitado ? acc : acc + (parseFloat(i.precio_unitario) || 0) * (parseFloat(i.cantidad) || 0);
+  }, 0);
+}
+
+function pendActualizarTab() {
+  var n = PEND ? Object.keys(PEND).length : 0;
+  var tab = document.querySelector('.tab-item[data-tab="pendientes"]');
+  if (tab) {
+    var globo = tab.querySelector('.tab-cuenta');
+    if (!globo) {
+      globo = document.createElement('span');
+      globo.className = 'tab-cuenta';
+      tab.style.position = 'relative';
+      tab.appendChild(globo);
+    }
+    globo.textContent = n;
+    globo.style.display = n ? '' : 'none';
+  }
+  var cnt = document.getElementById('cnt-pendientes');
+  if (cnt) cnt.textContent = n + ' tickets';
+}
+
+function pendCargar() {
+  return window._fbGet('pipeline/pendientes').then(function(datos) {
+    PEND = datos || {};
+    pendActualizarTab();
+  });
+}
+
+function pendRender() {
+  var cont = document.getElementById('tbl-pendientes');
+  if (!cont) return;
+  cont.style.height = 'auto';
+  cont.style.maxHeight = 'none';
+  if (PEND === null) {
+    cont.innerHTML = '<div class="pend-lista"><div class="pend-vacia">Cargando…</div></div>';
+    pendCargar().then(pendRender);
+    return;
+  }
+  var ids = Object.keys(PEND).sort(function(a, b) {
+    return (PEND[b].fecha || '').localeCompare(PEND[a].fecha || '');
+  });
+  if (!ids.length) {
+    cont.innerHTML = '<div class="pend-lista"><div class="pend-vacia">No hay tickets por aprobar. ' +
+      'Llegan aquí cuando se corre el pipeline en la laptop.</div></div>';
+    return;
+  }
+  cont.innerHTML = '<div class="pend-lista">' + ids.map(function(id) {
+    var t = PEND[id];
+    var items = t.items || [];
+    var dif = Math.round(((t.total || 0) - pendSuma(t)) * 100) / 100;
+    var nuevos = items.filter(function(i) { return i.match === 'nuevo'; }).length;
+    var dudosos = items.filter(function(i) { return i.confianza === 'baja'; }).length;
+    var chips = [
+      Math.abs(dif) <= 0.05 ? '<span class="pend-chip ok">✓ cuadra</span>'
+                            : '<span class="pend-chip warn">⚠ difiere ' + formatearPrecio(dif) + '</span>',
+      t.duplicadoDe ? '<span class="pend-chip dup">ya registrado</span>' : '',
+      (t.reemplaza || []).length && !t.duplicadoDe ? '<span class="pend-chip dup">sustituye ' + t.reemplaza.length + ' sueltos</span>' : '',
+      nuevos ? '<span class="pend-chip">' + nuevos + ' nuevos</span>' : '',
+      dudosos ? '<span class="pend-chip warn">' + dudosos + ' dudosos</span>' : '',
+    ].join('');
+    return '<div class="pend-card" onclick="pendAbrir(\'' + id + '\')">' +
+      '<div class="pend-card-top">' +
+        '<div>' + renderBadgeTienda(t.tienda) + ' <span class="pend-card-sub">' + pendFechaCorta(t.fecha) + '</span></div>' +
+        '<span class="pend-card-total">' + formatearPrecio(t.total) + '</span>' +
+      '</div>' +
+      '<div class="pend-card-sub">' + esc(t.sucursal || '') + ' · ' + items.length + ' artículos</div>' +
+      '<div class="pend-chips">' + chips + '</div>' +
+    '</div>';
+  }).join('') + '</div>';
+}
+
+function pendAbrir(id) {
+  pendId = id;
+  pendEdit = JSON.parse(JSON.stringify(PEND[id]));
+  pendEdit.reemplazar = (pendEdit.reemplaza || []).length > 0;
+  var overlay = document.createElement('div');
+  overlay.className = 'edit-overlay';
+  overlay.id = 'pend-overlay';
+  overlay.innerHTML = pendModalHTML();
+  document.body.appendChild(overlay);
+  pendRefrescarSuma();
+}
+
+function pendCerrar() {
+  var o = document.getElementById('pend-overlay');
+  if (o) o.remove();
+  pendId = null;
+  pendEdit = null;
+}
+
+function pendModalHTML() {
+  var t = pendEdit;
+  var tiendaOpts = Object.values(CONFIG_TIENDAS).map(function(c) {
+    return '<option value="' + c.clave + '"' + (t.tienda === c.clave ? ' selected' : '') + '>' + c.emoji + ' ' + c.etiqueta + '</option>';
+  }).join('') + (CONFIG_TIENDAS[t.tienda] ? '' : '<option value="' + esc(t.tienda) + '" selected>' + esc(t.tienda) + '</option>');
+
+  var banners = '';
+  if (t.duplicadoDe || (t.reemplaza || []).length) {
+    banners += '<div class="pend-banner dup">' +
+      (t.duplicadoDe ? '🔁 Este ticket ya está registrado (sesión ' + esc(t.duplicadoDe) + ').' : '🔁 Hay artículos sueltos de este día sin ticket.') +
+      '<label style="display:flex;gap:8px;align-items:center;margin-top:6px;">' +
+        '<input type="checkbox" ' + (t.reemplazar ? 'checked' : '') + ' onchange="pendEdit.reemplazar=this.checked">' +
+        'Sustituir los ' + (t.reemplaza || []).length + ' artículos viejos por los de esta foto' +
+      '</label></div>';
+  }
+  if ((t.avisos || []).length) {
+    banners += '<div class="pend-banner warn">⚠ Revisar:<ul>' + t.avisos.map(function(a) { return '<li>' + esc(a) + '</li>'; }).join('') + '</ul></div>';
+  }
+  if ((t.dudas || []).length) {
+    banners += '<div class="pend-banner info">💬 Notas de la extracción:<ul>' + t.dudas.map(function(a) { return '<li>' + esc(a) + '</li>'; }).join('') + '</ul></div>';
+  }
+
+  var items = (t.items || []).map(function(i, n) { return pendItemHTML(i, n); }).join('');
+
+  return '<div class="edit-modal pend-modal">' +
+    '<div class="edit-header">' +
+      '<div class="edit-title">📥 Ticket por aprobar</div>' +
+      '<button class="edit-btn-cancel" onclick="pendCerrar()" style="border:none;font-size:18px;background:transparent;cursor:pointer;color:var(--text3)">✕</button>' +
+    '</div>' +
+    '<div class="edit-body">' +
+      '<div class="edit-row">' +
+        '<div class="edit-field"><label class="edit-label">Tienda</label>' +
+          '<select class="edit-select" onchange="pendEdit.tienda=this.value">' + tiendaOpts + '</select></div>' +
+        '<div class="edit-field"><label class="edit-label">Fecha del ticket</label>' +
+          '<input class="edit-input" type="date" value="' + esc(t.fecha) + '" onchange="pendEdit.fecha=this.value"></div>' +
+      '</div>' +
+      '<div class="edit-row">' +
+        '<div class="edit-field"><label class="edit-label">Total pagado</label>' +
+          '<input class="edit-input" type="number" step="0.01" value="' + t.total + '" oninput="pendEdit.total=parseFloat(this.value)||0;pendRefrescarSuma()"></div>' +
+        '<div class="edit-field"><label class="edit-label">Suma de artículos</label>' +
+          '<div id="pend-suma" class="edit-input" style="border:none;padding-left:0"></div></div>' +
+      '</div>' +
+      '<div class="pend-card-sub">' + esc(t.sucursal || '') + (t.ahorro ? ' · ahorro ' + formatearPrecio(t.ahorro) : '') + '</div>' +
+      banners +
+      '<button class="edit-btn-cancel" onclick="pendVerFotos(this)">📷 Ver foto del ticket</button>' +
+      '<div class="pend-fotos" id="pend-fotos"></div>' +
+      '<div class="reg-section-title" style="margin-top:6px">Artículos (' + (t.items || []).length + ')</div>' +
+      '<datalist id="pend-productos">' + pendNombresConocidos().map(function(n) { return '<option value="' + esc(n) + '">'; }).join('') + '</datalist>' +
+      items +
+    '</div>' +
+    '<div class="edit-footer">' +
+      '<button class="edit-btn-delete" onclick="pendQuitar()">🗑 Quitar ticket</button>' +
+      '<button class="edit-btn-save" onclick="pendAprobar()">✓ Aprobar</button>' +
+    '</div>' +
+  '</div>';
+}
+
+function pendItemHTML(i, n) {
+  var cands = (i.sugerido ? [i.sugerido] : []).concat((i.candidatos || []).filter(function(c) { return c !== i.sugerido; }));
+  var candHTML = cands.length
+    ? '<div class="pend-chips">' + cands.map(function(c) {
+        return '<span class="pend-cand' + (c === i.sugerido ? ' sug' : '') + '" onclick="pendElegir(' + n + ', this.textContent)">' + esc(c) + '</span>';
+      }).join('') + '</div>'
+    : '';
+  var detalle = [];
+  if (i.granel) detalle.push(i.granel.peso_kg + ' kg × ' + formatearPrecio(i.granel.precio_kg) + '/kg');
+  if (i.descuento) detalle.push((i.promo || 'promo') + ' −' + formatearPrecio(i.descuento));
+  if (i.notas && !i.granel) detalle.push(i.notas);  // en granel las notas repiten peso y precio
+  return '<div class="pend-item' + (i.confianza === 'baja' ? ' baja' : '') + (i.quitado ? ' quitado' : '') + '" id="pend-item-' + n + '">' +
+    '<div class="pend-item-texto"><span>' + esc(i.texto) + (i.codigo ? ' · ' + esc(i.codigo) : '') + '</span>' +
+      '<span class="pend-match ' + esc(i.match) + '" id="pend-match-' + n + '">' + pendEtiquetaMatch(i) + '</span></div>' +
+    '<input class="edit-input" list="pend-productos" id="pend-prod-' + n + '" value="' + esc(i.producto) + '" oninput="pendCambiarProducto(' + n + ', this.value)">' +
+    '<div class="pend-item-fila">' +
+      '<label class="edit-label">Precio c/u<input class="edit-input" type="number" step="0.01" value="' + i.precio_unitario + '" oninput="pendEdit.items[' + n + '].precio_unitario=parseFloat(this.value)||0;pendRefrescarSuma()"></label>' +
+      '<label class="edit-label">Piezas<input class="edit-input" type="number" step="1" value="' + i.cantidad + '" oninput="pendEdit.items[' + n + '].cantidad=parseFloat(this.value)||0;pendRefrescarSuma()"></label>' +
+    '</div>' +
+    candHTML +
+    '<div class="pend-item-pie"><span>' + esc(detalle.join(' · ')) + '</span>' +
+      '<label style="white-space:nowrap"><input type="checkbox" ' + (i.quitado ? 'checked' : '') + ' onchange="pendQuitarItem(' + n + ', this.checked)"> quitar</label></div>' +
+  '</div>';
+}
+
+function pendEtiquetaMatch(i) {
+  return { codigo: 'CÓDIGO', equivalencia: 'APRENDIDO', catalogo: 'CATÁLOGO', nuevo: 'NUEVO' }[i.match] || esc(i.match);
+}
+
+// Cambiar el producto solo actualiza el estado y la etiqueta, sin volver a
+// pintar el modal (si se repinta, el input pierde el foco al escribir).
+function pendCambiarProducto(n, valor) {
+  var i = pendEdit.items[n];
+  i.producto = valor;
+  var original = PEND[pendId].items[n];
+  if (valor.trim() === original.producto) i.match = original.match;
+  else i.match = pendNombresConocidos().indexOf(valor.trim()) !== -1 ? 'catalogo' : 'nuevo';
+  var badge = document.getElementById('pend-match-' + n);
+  if (badge) { badge.className = 'pend-match ' + i.match; badge.textContent = pendEtiquetaMatch(i); }
+}
+
+function pendElegir(n, nombre) {
+  var input = document.getElementById('pend-prod-' + n);
+  if (input) input.value = nombre;
+  pendCambiarProducto(n, nombre);
+  pendEdit.items[n].confianza = 'alta';
+  var card = document.getElementById('pend-item-' + n);
+  if (card) card.classList.remove('baja');
+}
+
+function pendQuitarItem(n, quitar) {
+  pendEdit.items[n].quitado = quitar;
+  var card = document.getElementById('pend-item-' + n);
+  if (card) card.classList.toggle('quitado', quitar);
+  pendRefrescarSuma();
+}
+
+function pendRefrescarSuma() {
+  var el = document.getElementById('pend-suma');
+  if (!el || !pendEdit) return;
+  var suma = pendSuma(pendEdit);
+  var dif = Math.round(((pendEdit.total || 0) - suma) * 100) / 100;
+  el.innerHTML = formatearPrecio(suma) + (Math.abs(dif) <= 0.05
+    ? ' <span style="color:var(--green)">✓</span>'
+    : ' <span style="color:#f5a623">(difiere ' + formatearPrecio(dif) + ')</span>');
+}
+
+function pendVerFotos(btn) {
+  var cont = document.getElementById('pend-fotos');
+  if (!cont || !pendId) return;
+  btn.disabled = true;
+  btn.textContent = 'Cargando foto…';
+  window._fbGet('pipeline/imagenes/' + pendId).then(function(d) {
+    var imgs = (d && d.imagenes) || [];
+    cont.innerHTML = imgs.map(function(b64) { return '<img src="data:image/jpeg;base64,' + b64 + '">'; }).join('') ||
+      '<div class="pend-card-sub">Sin foto.</div>';
+    btn.style.display = 'none';
+  });
+}
+
+function pendMostrarToast(texto) {
+  var t = document.createElement('div');
+  t.className = 'pend-toast';
+  t.textContent = texto;
+  document.body.appendChild(t);
+  setTimeout(function() { t.remove(); }, 3200);
+}
+
+function pendAprobar() {
+  var t = pendEdit;
+  var vivos = (t.items || []).filter(function(i) { return !i.quitado; });
+  if (!vivos.length) { alert('El ticket no tiene artículos. Usa "Quitar ticket".'); return; }
+  if (vivos.some(function(i) { return !String(i.producto || '').trim(); })) {
+    alert('Hay artículos sin nombre de producto.'); return;
+  }
+  var dif = Math.round(((t.total || 0) - pendSuma(t)) * 100) / 100;
+  if (Math.abs(dif) > 0.5 && !confirm('La suma de artículos difiere del total por ' + formatearPrecio(dif) + '. ¿Aprobar de todos modos?')) return;
+  var id = pendId;
+  t.aprobado_en = new Date().toISOString();
+  window._fbWrite('pipeline/aprobados/' + id, t)
+    .then(function() { return window._fbWrite('pipeline/pendientes/' + id, null); })
+    .then(function() {
+      delete PEND[id];
+      pendCerrar();
+      pendActualizarTab();
+      pendRender();
+      pendMostrarToast('✓ Aprobado. Se guarda al correr el pipeline en la laptop.');
+    })
+    .catch(function(e) { alert('No se pudo aprobar: ' + e.message); });
+}
+
+function pendQuitar() {
+  if (!confirm('¿Quitar este ticket? No se registra (queda en descartados 30 días por si acaso).')) return;
+  var id = pendId;
+  var t = PEND[id];
+  t.quitado_en = new Date().toISOString();
+  window._fbWrite('pipeline/descartados/' + id, t)
+    .then(function() { return window._fbWrite('pipeline/pendientes/' + id, null); })
+    .then(function() {
+      delete PEND[id];
+      pendCerrar();
+      pendActualizarTab();
+      pendRender();
+      pendMostrarToast('Ticket quitado.');
+    })
+    .catch(function(e) { alert('No se pudo quitar: ' + e.message); });
+}
+
 cargarDatos()
   .then(function() {
     document.getElementById('loading-overlay').style.display = 'none';
@@ -2281,6 +2635,8 @@ cargarDatos()
     document.getElementById('header-sub').textContent =
       SESIONES.length + ' tickets · ' + TICKETS.length + ' artículos · ' + CATALOGO.length + ' en catálogo';
     inicializar();
+    // Solo el conteo para la pestaña; las imágenes se bajan al abrir un ticket
+    pendCargar();
   })
   .catch(function(err) {
     var ol = document.getElementById('loading-overlay');

@@ -101,7 +101,7 @@ def revisar_ticket(t, ctx, sesiones, tickets, nuevos_lote):
 
         seguro, via = resolver(ctx, tienda, i["texto"], i.get("codigo"))
         if seguro and seguro != i["producto"]:
-            avisos.append(f"Renglón {n} ({i['texto']}): el {via} dice '{seguro}', el borrador '{i['producto']}'")
+            avisos.append(f"Renglón {n} ({i['texto']}): {'el código de barras' if via == 'codigo' else 'la tabla de equivalencias'} dice '{seguro}', el borrador '{i['producto']}'")
             i["sugerido"] = seguro
         if i["match"] in ("catalogo", "codigo", "equivalencia") and i["producto"] not in ctx["productos"] and not seguro:
             if i["producto"] in nuevos_lote:
