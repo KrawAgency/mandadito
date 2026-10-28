@@ -367,6 +367,14 @@ var CONFIG_TIENDAS = {
   aki:       { clave:'aki',       etiqueta:'Super Aki',     color:'#9b7fe8', emoji:'🟣' },
   ml:        { clave:'ml',        etiqueta:'MercadoLibre',  color:'#e05252', emoji:'🔴' },
   pachamama: { clave:'pachamama', etiqueta:'Pachamama P.M.',color:'#4caf50', emoji:'🟢' },
+  aurrera:   { clave:'aurrera',   etiqueta:'Bodega Aurrera',color:'#e8c33a', emoji:'🟡' },
+  oceanleader:{ clave:'oceanleader', etiqueta:'Ocean Leader', color:'#3aa0e8', emoji:'🐟' },
+  multiproteinas:{ clave:'multiproteinas', etiqueta:'Multiproteínas', color:'#c0573e', emoji:'🥩' },
+  similares: { clave:'similares', etiqueta:'Farmacias Similares', color:'#5bb8a8', emoji:'💊' },
+  delsol:    { clave:'delsol',    etiqueta:'Tiendas Del Sol', color:'#e87fb0', emoji:'🍬' },
+  oxxo:      { clave:'oxxo',      etiqueta:'Oxxo',          color:'#d94a3d', emoji:'🏪' },
+  gomart:    { clave:'gomart',    etiqueta:'GoMart',        color:'#8a8a8a', emoji:'🏪' },
+  velvet:    { clave:'velvet',    etiqueta:'Papelería Velvet', color:'#a07de0', emoji:'✏️' },
 };
 
 // ── GUÍA DE USO (estática) ────────────────────────────────────
@@ -479,8 +487,9 @@ function obtenerClaveTienda(texto) {
 // Genera el HTML de un badge de tienda
 function renderBadgeTienda(claveTienda) {
   var config = CONFIG_TIENDAS[claveTienda];
-  if (!config) return '';
-  return '<span class="badge badge-' + claveTienda + '">' + config.etiqueta + '</span>';
+  if (!config) return claveTienda ? '<span class="badge">' + claveTienda + '</span>' : '';
+  // El color sale de CONFIG_TIENDAS para que una tienda nueva no necesite CSS propio
+  return '<span class="badge" style="background:' + config.color + '26;color:' + config.color + '">' + config.etiqueta + '</span>';
 }
 
 // Devuelve la clase CSS para colorear una nota según su contenido

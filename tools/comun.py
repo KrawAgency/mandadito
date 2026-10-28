@@ -30,6 +30,12 @@ TIENDAS = {
     "pachamama": ("Pachamama P.M.", "Puerto Morelos"),
     "oceanleader": ("Ocean Leader", "Cancún"),
     "multiproteinas": ("Multiproteínas", "Cancún"),
+    "aurrera": ("Bodega Aurrera", "Puerto Morelos"),
+    "similares": ("Farmacias Similares", "Puerto Morelos"),
+    "delsol": ("Tiendas Del Sol", "Cancún"),
+    "oxxo": ("Oxxo", "Puerto Morelos"),
+    "gomart": ("GoMart", "Cancún"),
+    "velvet": ("Papelería Velvet", "Puerto Morelos"),
 }
 
 # Nodos de datos "de verdad" (los que lee la app). pipeline/ no cuenta.
