@@ -421,13 +421,13 @@ var CONFIG_TIENDAS = {
 
 // ── GUÍA DE USO (estática) ────────────────────────────────────
 const GUIA = [
-  { pregunta: '📸 Foto del ticket', respuesta: 'Capturo todos los artículos, precios, descuentos y totales' },
-  { pregunta: '📸 Foto del producto', respuesta: 'Identifico nombre completo, marca, gramaje y características' },
-  { pregunta: '📸 Ticket + foto productos', respuesta: 'Intento hacer matching visual (funciona muy bien con 3-5 productos)' },
-  { pregunta: '💬 Mensaje de texto', respuesta: "Ej: 'Vi Listerine en Chedraui a $180' — registro observación de precio" },
-  { pregunta: '📎 Este archivo actualizado', respuesta: 'Lo abres, me lo adjuntas, yo retomo el contexto sin perder nada' },
-  { pregunta: '🔄 Cada sesión', respuesta: 'Adjunta archivo + nuevos tickets → yo genero versión actualizada' },
-  { pregunta: '⬇ Exportar CSV', respuesta: 'Descarga todos los tickets como CSV para abrir en Excel o Sheets' },
+  { pregunta: '📸 Foto del ticket', respuesta: 'Tómale foto completa y súbela a la carpeta Tickets-compras de Drive. Si es largo, en varias fotos seguidas.' },
+  { pregunta: '💻 En la laptop', respuesta: 'Claude Code corre el pipeline (tools/): lee las fotos, empata cada renglón con el catálogo y valida contra el total.' },
+  { pregunta: '📥 Pendientes', respuesta: 'Aquí llegan los tickets leídos. Revisa los marcados como NUEVO o dudosos, corrige el producto si hace falta y Aprueba.' },
+  { pregunta: '✅ Al aprobar', respuesta: 'Se guarda en Firebase la próxima vez que corre el pipeline (con respaldo). Lo que apruebas enseña: el mismo texto del ticket ya llega resuelto la siguiente vez.' },
+  { pregunta: '🔒 Datos de pago', respuesta: 'No se transcriben tarjeta, afiliación, autorización ni RFC, y esa parte de la foto se tapa antes de subirla.' },
+  { pregunta: '📋 Registrar ticket', respuesta: 'Para capturar a mano un JSON (botón al final de la Lista).' },
+  { pregunta: '⬇ Exportar CSV', respuesta: 'Descarga todos los artículos como CSV para abrir en Excel o Sheets.' },
 ];
 
 // ══════════════════════════════════════════════════════════════
@@ -2262,6 +2262,10 @@ function regConfirmar() {
       notas:        item.notas || '',
       tipo:         item.tipo || 'compra',
     };
+    // Ligar con la sesión que se escribe abajo (misma clave s_{ts})
+    if (regMeta.tipo !== 'observacion' && total > 0 && ticketsNuevos[key].tipo === 'compra') {
+      ticketsNuevos[key].sesion = 's_' + ts;
+    }
     // También actualizar catálogo si no existe
     var yaEnCatalogo = CATALOGO.some(function(c) {
       return c.producto.toLowerCase() === item.producto.toLowerCase() && c.tienda === tienda;
