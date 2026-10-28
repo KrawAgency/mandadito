@@ -39,6 +39,20 @@ centavo con sus artículos. De las otras 14, 13 tienen foto en Pendientes y
 quedan bien al aprobarlas con "Sustituir". La única que queda sin foto es
 Chedraui P.M. del 13/04/2026 ($169.16).
 
+## Sin aprobación por ticket (cambio del mismo día)
+
+Revisar 55 tickets completos era justo el trabajo que se quería quitar. Ahora
+`aplicar.py` guarda cada ticket con la mejor lectura y solo pregunta por los
+renglones que pueden ser productos distintos y cambian la comparación de
+precios. Hay una pregunta por texto de ticket aunque salga en varios tickets:
+"MILANESA" aparece en 3 tickets y es una sola pregunta. Del primer lote, 107
+renglones tenían confianza baja; casi todos eran variantes menores o nombres
+claros con alguna duda menor. Quedaron 7 preguntas reales. Cada respuesta deja
+la equivalencia `confirmada`, y ese texto ya no se vuelve a preguntar.
+
+Los tickets ya registrados se sustituyen siempre por la versión de la foto,
+que cuadra al centavo. Con eso, las 62 sesiones cuadran con sus artículos.
+
 ## Empatar nombres del ticket con el catálogo
 
 Cascada por renglón (`contexto.resolver` y `prompt-extraccion.md`):
@@ -75,12 +89,12 @@ total pagado.
 
 ## Pendiente (decisiones de Fernando)
 
-1. **Publicar la rama** `pipeline-tickets` en `main`. Hasta entonces la app
-   publicada no tiene la pestaña Pendientes.
-2. **Revisar los 55 tickets pendientes.** Los que no son súper llegan igual
-   para que decida: pintura en Costco (3 tickets, $7,817), renovación de la
-   membresía de Costco ($599.95, dentro del ticket del 21/09), papelería, 2 de
-   farmacia, Oxxo, GoMart y dulcería Del Sol.
+1. ~~Publicar la rama `pipeline-tickets` en `main`~~ (hecho el 2026-10-28).
+2. **Contestar las dudas** de la pestaña Dudas y correr `aplicar.py --escribir`.
+   Quedaron guardados también los tickets que no son súper: pintura en Costco
+   (3 tickets), la renovación de la membresía (en el ticket del 21/09),
+   papelería, farmacia, Oxxo, GoMart y la dulcería Del Sol. Se pueden borrar
+   desde Tickets si no deben contar.
 3. **Reglas de Firebase abiertas.** Cualquiera con la URL puede leer y
    escribir. Lo recomendable es Firebase Auth con Google para los dos
    celulares y reglas `auth != null`. Cambia la app y los scripts (que hoy

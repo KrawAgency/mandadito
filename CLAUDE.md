@@ -14,7 +14,7 @@ foto con el pipeline de `tools/`.
   los scripts bajan la base completa a `C:\dev\mandadito-proceso\respaldos\`
   y cancelan si el respaldo falla.
 - La app solo escribe en `lista`, en el registro manual de tickets, en la
-  edición de registros y en `pipeline/` (aprobar o quitar).
+  edición de registros y en `pipeline/respuestas` (pestaña Dudas).
 - Datos de pago (tarjeta, afiliación, autorización, ARQC) y RFC del cliente: no
   se transcriben y se tapan en las fotos antes de subirlas.
 - Validar la sintaxis del JS antes de probar: extraer el `<script>` principal y
@@ -33,7 +33,8 @@ foto con el pipeline de `tools/`.
 | `codigos/{ean}` | Código de barras → producto canónico | EAN |
 | `equivalencias/{tienda}/{TEXTO}` | Texto tal como lo imprime la tienda → producto. `ambiguo: true` si el mismo texto se aprobó con dos productos (entonces manda el código) | texto normalizado |
 | `lista` | La lista del súper compartida | arreglo |
-| `pipeline/pendientes`, `imagenes`, `aprobados`, `descartados` | Tickets por foto en revisión | id de la foto |
+| `pipeline/pendientes`, `imagenes` | Tickets subidos que aún no guarda `aplicar.py`; fotos con los datos de pago tapados | id de la foto |
+| `pipeline/preguntas`, `respuestas` | Dudas por renglón (una por texto de ticket) y lo que contestó Fernando | `{tienda}__{TEXTO}` |
 | `archivo/{id}/...` | Lo que un ticket aprobado sustituyó (artículos y sesión viejos) | id de la foto |
 
 - El producto se identifica **por nombre** (así lo usa toda la app). Renombrar
@@ -47,11 +48,12 @@ foto con el pipeline de `tools/`.
 Buscar por el encabezado `// ═══` de cada módulo (los números de línea cambian):
 
 - `<script type="module">`: inicializa Firebase y expone `_fbGet`, `_fbWrite` (set de un nodo; `null` borra), `_fbSet`/`_fbListen` (lista).
+- Diseño: paleta del logo en `:root` (crema, naranja `--accent`, café), tipografía Nunito, logo en `logo-icono.png` y `logo-texto.png` (recortes de `logo-completo.png`). Las vistas de Tickets, Catálogo y Resumen son tarjetas, no tablas.
 - `CONFIGURACIÓN DE TIENDAS`: `CONFIG_TIENDAS` (clave, etiqueta, color). Una tienda nueva se agrega aquí y en `tools/comun.py` (`TIENDAS`).
 - `CARGA DE DATOS`: `cargarDatos()` llena `TICKETS`, `CATALOGO`, `SESIONES` y los ordena por fecha (`fechaISO`).
 - `CONSTRUCCIÓN DE LA UI`: tablas, `SECCIONES` (pestañas), `actualizarSeccion`, `navegar`.
 - `MÓDULO: LISTA DE COMPRAS`, `PICKER DE CATÁLOGO`, `EDICIÓN DE REGISTROS` (`editEscribir` combina con el registro original para no perder campos), `REGISTRO DE TICKET` (captura manual por JSON).
-- `MÓDULO: PENDIENTES`: room de aprobación (`pendRender`, `pendAbrir`, `pendAprobar`, `pendQuitar`).
+- `MÓDULO: DUDAS`: preguntas por renglón (`dudasRender`, `dudaResponder`); escribe `pipeline/respuestas`.
 
 ## Pipeline de tickets por foto (`tools/`)
 
@@ -62,8 +64,7 @@ Python con librería estándar más Pillow. Carpeta de trabajo: `C:\dev\mandadit
 2. `python tools/contexto.py`, y luego extraer con Claude Code siguiendo `tools/prompt-extraccion.md`: un `borradores/{id}.json` por ticket, por tandas de ~10 grupos (anotar en `tandas.md`).
 3. `python tools/revisar.py`: fecha, tienda, suma contra el total, precio por pieza, privacidad, nombres nuevos parecidos a existentes y duplicados contra `sesiones/`. Escribe `revision.json`.
 4. `python tools/subir.py`, y luego `--subir`: a `pipeline/pendientes`, con las imágenes tapadas (revisarlas en `subidas/`).
-5. En la app: pestaña Pendientes, Aprobar o Quitar.
-6. `python tools/aplicar.py`, y luego `--escribir`: respaldo y una escritura atómica por ticket aprobado. `--purgar-descartados` limpia lo quitado hace más de 30 días.
+5. `python tools/aplicar.py`, y luego `--escribir`: respaldo y guarda cada ticket tal cual (sin aprobación por ticket), sustituyendo lo capturado antes de ese día. Los renglones con `preguntar` se vuelven una pregunta por texto en `pipeline/preguntas`; las respuestas de la pestaña Dudas (`pipeline/respuestas`) se aplican en la siguiente corrida. `--purgar-descartados` limpia lo descartado.
 
 `tools/limpiar_historico.py` fue un arreglo de una sola vez de los datos viejos
 (ya aplicado el 2026-10-28; correrlo otra vez no cambia nada).

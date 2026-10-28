@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#3b82f6">
+<meta name="theme-color" content="#EE5A1F">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>🛒 Mandadito</title>
@@ -41,56 +41,62 @@
   window._fbListo = true;
   document.dispatchEvent(new Event('firebase-listo'));
 </script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"></script>
 <style>
   :root {
-    --bg: #0f0f0f; --surface: #1a1a1a; --surface2: #242424;
-    --border: #2e2e2e; --accent: #4F8EF7; --green: #4caf7d;
-    --red: #e05252; --purple: #9b7fe8; --blue: #4F8EF7;
-    --teal: #2ab5b5; --text: #f0ede8; --text2: #999; --text3: #666;
-    --tab-height: 60px;
+    /* Paleta del logo: crema, naranja y café */
+    --bg: #FFF6EC; --surface: #FFFFFF; --surface2: #FFF0E0;
+    --border: #F0DCC6; --accent: #EE5A1F; --accent-dark: #D9480F; --green: #1E8E3E;
+    --red: #D63B2F; --purple: #7B5BD6; --blue: #2F6FDB; --warn: #B86E00;
+    --teal: #13998F; --text: #2B1A14; --text2: #6B5246; --text3: #A08877;
+    --sombra: 0 2px 10px rgba(120,60,20,0.08);
+    --tab-height: 64px;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; }
+  body { background: var(--bg); color: var(--text); font-family: 'Nunito', system-ui, sans-serif; font-size: 15px; }
+  button, input, select, textarea { font-family: inherit; }
   
   /* ── Header ── */
-  .header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 18px 28px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 200; }
-  .header-left { display: flex; align-items: baseline; gap: 12px; }
-  .header h1 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 20px; font-weight: 800; color: var(--accent); letter-spacing: -0.3px; }
-  .header-sub { color: var(--text3); font-size: 13px; }
-  .dl-btn { background: var(--accent); color: #fff; border: none; padding: 9px 20px; border-radius: 8px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 7px; transition: all 0.2s; text-decoration: none; }
-  .dl-btn:hover { background: #3a7de8; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(79,142,247,0.35); }
+  .header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 200; box-shadow: var(--sombra); }
+  .header-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .header-icono { width: 42px; height: 42px; flex-shrink: 0; }
+  .header-texto { height: 24px; display: block; }
+  .header-sub { color: var(--text3); font-size: 12px; display: block; margin-top: 2px; }
+  .icon-btn { background: var(--surface2); color: var(--accent-dark); border: 1px solid var(--border); padding: 8px 12px; border-radius: 10px; font-size: 13px; font-weight: 800; cursor: pointer; white-space: nowrap; }
+  .icon-btn:hover { border-color: var(--accent); }
+  .dl-btn { background: var(--accent); color: #fff; border: none; padding: 9px 20px; border-radius: 8px; font-family:inherit; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 7px; transition: all 0.2s; text-decoration: none; }
+  .dl-btn:hover { background: var(--accent-dark); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(238,90,31,0.35); }
   
   /* ── Summary bar ── */
   .summary-bar { display: none; }
   .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 18px; flex: 1; min-width: 140px; }
   .stat-card-label { color: var(--text3); font-size: 12px; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; }
-  .stat-card-value { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 22px; font-weight: 700; }
+  .stat-card-value { font-family:inherit; font-size: 22px; font-weight: 700; }
   .stat-card-value.green { color: var(--green); }
   .stat-card-value.accent { color: var(--accent); }
   .stat-card-sub { color: var(--text3); font-size: 12px; margin-top: 4px; }
 
   /* ── Sheet blocks ── */
   .sheets-container { padding-bottom: var(--tab-height); }
-  .sheet-block { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; }
-  .sheet-title { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--border); background: var(--surface2); flex-shrink: 0; flex-wrap: wrap; gap: 10px; }
+  .sheet-block { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; overflow: hidden; display: flex; flex-direction: column; box-shadow: var(--sombra); }
+  .sheet-title { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid var(--border); background: var(--surface); flex-shrink: 0; flex-wrap: wrap; gap: 10px; }
   .sheet-title-left { display: flex; align-items: center; gap: 10px; }
-  .sheet-name { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 17px; font-weight: 700; }
+  .sheet-name { font-family:inherit; font-size: 17px; font-weight: 700; }
   .sheet-count { background: var(--bg); color: var(--text3); font-size: 12px; padding: 3px 9px; border-radius: 20px; border: 1px solid var(--border); }
   /* ── Toolbar ── */
   .sheet-toolbar { padding: 12px 18px; display: flex; gap: 10px; align-items: center; border-bottom: 1px solid var(--border); flex-wrap: wrap; flex-shrink: 0; }
   .search-wrap { position: relative; flex: 1; min-width: 180px; }
-  .search-wrap input { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 7px 10px 7px 32px; color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; outline: none; transition: border-color 0.2s; }
+  .search-wrap input { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 7px 10px 7px 32px; color: var(--text); font-family:inherit; font-size: 14px; outline: none; transition: border-color 0.2s; }
   .search-wrap input:focus { border-color: var(--accent); }
   .search-icon { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); color: var(--text3); font-size: 14px; pointer-events: none; }
-  .filter-select { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 7px 10px; color: var(--text2); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; outline: none; cursor: pointer; }
+  .filter-select { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 7px 10px; color: var(--text2); font-family:inherit; font-size: 14px; outline: none; cursor: pointer; }
   
   /* ── Tables ── */
   .table-scroll { overflow-x: auto; overflow-y: auto; height: 62vw; max-height: 720px; min-height: 320px; }
   table { width: 100%; border-collapse: collapse; font-size: 14px; }
   thead th { background: var(--surface2); color: var(--text2); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.6px; padding: 10px 13px; text-align: left; position: sticky; top: 0; z-index: 10; border-bottom: 1px solid var(--border); white-space: nowrap; }  tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
-  tbody tr:hover { background: rgba(255,255,255,0.03); }
+  tbody tr:hover { background: rgba(238,90,31,0.04); }
   tbody td { padding: 9px 13px; vertical-align: top; line-height: 1.5; }
 
   /* ── Tienda color stripes ── */
@@ -103,24 +109,24 @@
 
   /* ── Badges ── */
   .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 12px; font-weight: 600; white-space: nowrap; }
-  .badge-costco  { background: rgba(76,175,125,0.15);  color: #4caf7d; }
+  .badge-costco  { background: rgba(30,142,62,0.15);  color: var(--green); }
   .badge-walmart { background: rgba(91,155,213,0.15);  color: #5b9bd5; }
-  .badge-chedraui{ background: rgba(245,166,35,0.15);  color: #f5a623; }
-  .badge-aki     { background: rgba(155,127,232,0.15); color: #9b7fe8; }
-  .badge-ml      { background: rgba(224,82,82,0.15);   color: #e05252; }
+  .badge-chedraui{ background: rgba(184,110,0,0.15);  color: var(--warn); }
+  .badge-aki     { background: rgba(123,91,214,0.15); color: var(--purple); }
+  .badge-ml      { background: rgba(224,82,82,0.15);   color: var(--red); }
   .badge-chedpm  { background: rgba(42,181,181,0.15);  color: #2ab5b5; }
 
   /* ── Special rows ── */
-  .price-cell { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; font-weight: 700; color: var(--accent); white-space: nowrap; }
+  .price-cell { font-family:inherit; font-size: 15px; font-weight: 700; color: var(--accent); white-space: nowrap; }
   .note-promo { color: var(--green); font-size: 13px; }
-  .note-warn  { color: #e8a23a; font-size: 13px; }
+  .note-warn  { color: var(--warn); font-size: 13px; }
   .note-obs   { color: var(--text3); font-size: 13px; }
   tr.section-hdr td   { background: var(--surface2); color: var(--text3); font-size: 12px; font-weight: 600; letter-spacing: 0.4px; padding: 7px 13px; }
-  tr.subtotal-row td  { font-weight: 700; color: var(--accent); background: rgba(79,142,247,0.05); font-size: 14px; }
+  tr.subtotal-row td  { font-weight: 700; color: var(--accent); background: rgba(238,90,31,0.05); font-size: 14px; }
   
   /* ── Resumen table ── */
   .resumen-table td:nth-child(3),
-  .resumen-table td:nth-child(4) { font-family: 'DM Serif Display', serif; font-size: 15px; }
+  .resumen-table td:nth-child(4) { font-family:inherit; font-size: 15px; }
   .resumen-table tr.total-row td { border-top: 2px solid var(--accent); color: var(--accent); font-weight: 700; font-size: 16px; }
   .savings-val { color: var(--green) !important; }
 
@@ -154,12 +160,12 @@
 
   /* Input con autocomplete */
   .lista-input-wrap { position: relative; margin-bottom: 14px; }
-  .lista-input { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; outline: none; transition: border-color 0.2s; }
+  .lista-input { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; color: var(--text); font-family:inherit; font-size: 15px; outline: none; transition: border-color 0.2s; }
   .lista-input:focus { border-color: var(--accent); }
   .lista-input::placeholder { color: var(--text3); }
 
   /* Dropdown */
-  .lista-dropdown { position: absolute; top: calc(100% + 5px); left: 0; right: 0; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; z-index: 400; display: none; box-shadow: 0 8px 28px rgba(0,0,0,0.55); }
+  .lista-dropdown { position: absolute; top: calc(100% + 5px); left: 0; right: 0; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; z-index: 400; display: none; box-shadow: 0 8px 28px rgba(120,60,20,0.18); }
   .lista-dropdown.visible { display: block; }
   .ldd-item { padding: 9px 14px; cursor: pointer; display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--border); transition: background 0.1s; }
   .ldd-item:last-child { border-bottom: none; }
@@ -173,7 +179,7 @@
   .litem-drag { color: var(--text3); font-size: 18px; padding: 0 6px; cursor: grab; flex-shrink: 0; touch-action: none; }
   .lista-vacia { text-align: center; padding: 32px 16px; color: var(--text3); font-size: 14px; font-style: italic; border: 1px dashed var(--border); border-radius: 10px; }
   .litem-card { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; transition: border-color 0.15s; }
-  .litem-card:hover { border-color: #3a4060; }
+  .litem-card:hover { border-color: var(--accent); }
   .litem-header { display: flex; align-items: center; padding: 9px 12px; gap: 9px; }
   .litem-check { width: 17px; height: 17px; border-radius: 50%; border: 1.5px solid var(--border); background: transparent; cursor: pointer; flex-shrink: 0; transition: all 0.18s; display: flex; align-items: center; justify-content: center; font-size: 9px; color: #fff; }
   .litem-check.litem-checked { background: var(--green); border-color: var(--green); }
@@ -192,9 +198,9 @@
   .lprecio-tienda { display: flex; align-items: center; gap: 6px; }
   .lprecio-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
  .lprecio-tienda-nom { font-size: 14px; color: var(--text2); }
-  .lprecio-mejor-badge { font-size: 11px; background: rgba(76,175,125,0.15); color: var(--green); padding: 2px 7px; border-radius: 10px; border: 1px solid rgba(76,175,125,0.25); margin-left: 4px; }
+  .lprecio-mejor-badge { font-size: 11px; background: rgba(30,142,62,0.15); color: var(--green); padding: 2px 7px; border-radius: 10px; border: 1px solid rgba(30,142,62,0.25); margin-left: 4px; }
   .lprecio-der { text-align: right; }
-  .lprecio-monto { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 16px; font-weight: 700; color: var(--accent); }
+  .lprecio-monto { font-family:inherit; font-size: 16px; font-weight: 700; color: var(--accent); }
   .lprecio-monto.lprecio-es-mejor { color: var(--green); }
   .lprecio-nota { font-size: 12px; color: var(--text3); margin-top: 1px; }
   .litem-sin-precios { font-size: 13px; color: var(--text3); font-style: italic; }
@@ -202,7 +208,7 @@
   /* Ruta sugerida (columna derecha) */
   .ruta-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; position: sticky; top: 72px; }
   .ruta-box-header { padding: 13px 16px; border-bottom: 1px solid var(--border); }
-  .ruta-box-title { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 16px; font-weight: 700; }
+  .ruta-box-title { font-family:inherit; font-size: 16px; font-weight: 700; }
   .ruta-box-sub { font-size: 13px; color: var(--text3); }
   .ruta-vacia { padding: 24px 16px; text-align: center; color: var(--text3); font-size: 14px; font-style: italic; }
   .ruta-tienda-bloque { border-bottom: 1px solid var(--border); }
@@ -212,7 +218,7 @@
   .ruta-tdot { width: 7px; height: 7px; border-radius: 50%; }
   .ruta-tnombre { font-size: 14px; font-weight: 500; }
   .ruta-tcuenta { font-size: 13px; color: var(--text3); }
-  .ruta-tsubtotal { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 16px; font-weight: 700; color: var(--accent); }
+  .ruta-tsubtotal { font-family:inherit; font-size: 16px; font-weight: 700; color: var(--accent); }
   .ruta-items-det { padding: 0 16px 10px; display: flex; flex-direction: column; gap: 3px; }
   .ruta-item-lin { display: flex; align-items: flex-start; justify-content: space-between; font-size: 13px; color: var(--text2); gap: 8px; }
   .ruta-item-lin-nom { word-break: break-word; flex: 1; }
@@ -220,17 +226,17 @@
   .ruta-sin-datos { padding: 8px 16px; font-size: 13px; color: var(--text3); font-style: italic; border-top: 1px solid var(--border); }
   .ruta-total-bar { padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; border-top: 2px solid var(--border); background: var(--surface); }
   .ruta-total-label { font-size: 14px; color: var(--text2); }
-  .ruta-total-valor { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 20px; font-weight: 800; color: var(--accent); }
+  .ruta-total-valor { font-family:inherit; font-size: 20px; font-weight: 800; color: var(--accent); }
 
   /* Modal catálogo picker */
-  .picker-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:900;display:flex;align-items:center;justify-content:center;padding:16px; }
+  .picker-overlay { position:fixed;inset:0;background:rgba(43,26,20,0.45);z-index:900;display:flex;align-items:center;justify-content:center;padding:16px; }
   .picker-modal { background:var(--surface);border:1px solid var(--border);border-radius:16px;width:100%;max-width:560px;max-height:85vh;display:flex;flex-direction:column;overflow:hidden; }
   .picker-header { padding:18px 20px 12px;border-bottom:1px solid var(--border);flex-shrink:0; }
-  .picker-title { font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:var(--accent);margin-bottom:10px; }
+  .picker-title { font-family:inherit;font-size:20px;font-weight:800;color:var(--accent);margin-bottom:10px; }
   .picker-cats { display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px; }
   .picker-cat { background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:13px;color:var(--text2);cursor:pointer;transition:all 0.15s; }
   .picker-cat.active { background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600; }
-  .picker-search { width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-size:15px;outline:none;font-family:'Plus Jakarta Sans',sans-serif; }
+  .picker-search { width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-size:15px;outline:none;font-family:inherit; }
   .picker-search:focus { border-color:var(--accent); }
   .picker-body { overflow-y:auto;flex:1;padding:12px 20px; }
   .picker-grid { display:flex;flex-direction:column;gap:4px; }
@@ -245,64 +251,64 @@
   .picker-item.ya-en-lista .picker-item-check { background:var(--accent);border-color:var(--accent);color:#fff; }
   .picker-footer { padding:14px 20px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0; }
   .picker-count { font-size:14px;color:var(--text3); }
-  .picker-btn-add { background:var(--accent);color:#fff;border:none;border-radius:10px;padding:10px 20px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;font-size:14px;cursor:pointer;transition:opacity 0.2s; }
+  .picker-btn-add { background:var(--accent);color:#fff;border:none;border-radius:10px;padding:10px 20px;font-family:inherit;font-weight:600;font-size:14px;cursor:pointer;transition:opacity 0.2s; }
   .picker-btn-add:disabled { opacity:0.35;cursor:not-allowed; }
-  .picker-btn-cancel { background:transparent;border:1px solid var(--border);color:var(--text3);border-radius:10px;padding:10px 16px;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;cursor:pointer; }
-  .picker-add-btn-inline { background:var(--surface2);border:1px solid var(--border);color:var(--accent);border-radius:8px;padding:5px 12px;font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all 0.2s;margin-left:8px; }
-  .picker-add-btn-inline:hover { background:var(--accent);color:#000;border-color:var(--accent); }
+  .picker-btn-cancel { background:transparent;border:1px solid var(--border);color:var(--text3);border-radius:10px;padding:10px 16px;font-family:inherit;font-size:14px;cursor:pointer; }
+  .picker-add-btn-inline { background:var(--surface2);border:1px solid var(--border);color:var(--accent);border-radius:8px;padding:5px 12px;font-size:12px;font-family:inherit;cursor:pointer;transition:all 0.2s;margin-left:8px; }
+  .picker-add-btn-inline:hover { background:var(--accent);color:#fff;border-color:var(--accent); }
 
   /* Modal edición de registro */
-  .edit-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:600;display:flex;align-items:center;justify-content:center;padding:16px;overflow-y:auto; }
+  .edit-overlay { position:fixed;inset:0;background:rgba(43,26,20,0.45);z-index:600;display:flex;align-items:center;justify-content:center;padding:16px;overflow-y:auto; }
   .edit-modal { background:var(--surface);border:1px solid var(--border);border-radius:16px;width:100%;max-width:560px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden; }
   .edit-header { padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0; }
-  .edit-title { font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;color:var(--accent); }
+  .edit-title { font-family:inherit;font-size:18px;font-weight:800;color:var(--accent); }
   .edit-body { overflow-y:auto;flex:1;padding:16px 20px;display:flex;flex-direction:column;gap:10px; }
   .edit-footer { padding:12px 20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:8px;flex-shrink:0; }
-  .edit-btn-save { background:var(--accent);color:#fff;border:none;border-radius:10px;padding:10px 20px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;font-size:14px;cursor:pointer; }
-  .edit-btn-delete { background:transparent;border:1px solid #e05252;color:#e05252;border-radius:10px;padding:10px 14px;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;cursor:pointer; }
-  .edit-btn-cancel { background:transparent;border:1px solid var(--border);color:var(--text3);border-radius:10px;padding:10px 14px;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;cursor:pointer; }
+  .edit-btn-save { background:var(--accent);color:#fff;border:none;border-radius:10px;padding:10px 20px;font-family:inherit;font-weight:600;font-size:14px;cursor:pointer; }
+  .edit-btn-delete { background:transparent;border:1px solid var(--red);color:var(--red);border-radius:10px;padding:10px 14px;font-family:inherit;font-size:14px;cursor:pointer; }
+  .edit-btn-cancel { background:transparent;border:1px solid var(--border);color:var(--text3);border-radius:10px;padding:10px 14px;font-family:inherit;font-size:14px;cursor:pointer; }
   .edit-row { display:grid;grid-template-columns:1fr 1fr;gap:10px; }
   .edit-field { display:flex;flex-direction:column;gap:4px; }
   .edit-label { font-size:11px;color:var(--text3); }
-  .edit-input { background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;width:100%; }
+  .edit-input { background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-family:inherit;font-size:13px;outline:none;width:100%; }
   .edit-input:focus { border-color:var(--accent); }
-  .edit-select { background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;width:100%;cursor:pointer; }
-  .edit-consistencia { background:rgba(245,166,35,0.08);border:1px solid #f5a623;border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:10px; }
-  .edit-consistencia-title { font-size:12px;font-weight:600;color:#f5a623; }
+  .edit-select { background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-family:inherit;font-size:13px;outline:none;width:100%;cursor:pointer; }
+  .edit-consistencia { background:rgba(184,110,0,0.08);border:1px solid var(--warn);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:10px; }
+  .edit-consistencia-title { font-size:12px;font-weight:600;color:var(--warn); }
   .edit-consistencia-msg { font-size:12px;color:var(--text2); }
   .edit-consistencia-btns { display:flex;gap:8px; }
-  .edit-cons-btn { flex:1;padding:9px;border-radius:8px;font-family:'DM Sans', sans-serif; cursor:pointer; }
+  .edit-cons-btn { flex:1;padding:9px;border-radius:8px;font-family:inherit; cursor:pointer; }
   
   /* Modal registro de ticket */
-  .reg-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:600;display:flex;align-items:center;justify-content:center;padding:16px;overflow-y:auto; }
+  .reg-overlay { position:fixed;inset:0;background:rgba(43,26,20,0.45);z-index:600;display:flex;align-items:center;justify-content:center;padding:16px;overflow-y:auto; }
   .reg-modal { background:var(--surface);border:1px solid var(--border);border-radius:16px;width:100%;max-width:620px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden; }
   .reg-header { padding:18px 20px 14px;border-bottom:1px solid var(--border);flex-shrink:0; }
-  .reg-title { font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:var(--accent);margin-bottom:4px; }
+  .reg-title { font-family:inherit;font-size:20px;font-weight:800;color:var(--accent);margin-bottom:4px; }
   .reg-subtitle { font-size:13px;color:var(--text3); }
   .reg-body { overflow-y:auto;flex:1;padding:16px 20px;display:flex;flex-direction:column;gap:14px; }
   .reg-section-title { font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px; }
   .reg-row { display:grid;grid-template-columns:1fr 1fr;gap:10px; }
   .reg-field { display:flex;flex-direction:column;gap:4px; }
   .reg-label { font-size:11px;color:var(--text3); }
-  .reg-input { background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;width:100%; }
+  .reg-input { background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-family:inherit;font-size:13px;outline:none;width:100%; }
   .reg-input:focus { border-color:var(--accent); }
-  .reg-select { background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;width:100%;cursor:pointer; }
-  .reg-textarea { background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;width:100%;min-height:80px;resize:vertical; }
+  .reg-select { background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-family:inherit;font-size:13px;outline:none;width:100%;cursor:pointer; }
+  .reg-textarea { background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-family:inherit;font-size:13px;outline:none;width:100%;min-height:80px;resize:vertical; }
   .reg-textarea:focus { border-color:var(--accent); }
-  .reg-parse-btn { background:var(--accent);color:#000;border:none;border-radius:8px;padding:9px 16px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:13px;cursor:pointer;align-self:flex-end; }
+  .reg-parse-btn { background:var(--accent);color:#fff;border:none;border-radius:8px;padding:9px 16px;font-family:inherit;font-weight:600;font-size:13px;cursor:pointer;align-self:flex-end; }
   .reg-items { display:flex;flex-direction:column;gap:8px; }
   .reg-item { background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px; }
-  .reg-item.ambiguo { border-color:#f5a623;background:rgba(245,166,35,0.06); }
+  .reg-item.ambiguo { border-color:var(--warn);background:rgba(184,110,0,0.06); }
   .reg-item-header { display:flex;align-items:center;justify-content:space-between;gap:8px; }
   .reg-item-nombre { font-size:13px;font-weight:500;flex:1; }
   .reg-item-badge { font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600; }
-  .reg-item-badge.alta { background:rgba(76,175,125,0.15);color:#4caf7d; }
-  .reg-item-badge.baja { background:rgba(245,166,35,0.15);color:#f5a623; }
+  .reg-item-badge.alta { background:rgba(30,142,62,0.15);color:var(--green); }
+  .reg-item-badge.baja { background:rgba(184,110,0,0.15);color:var(--warn); }
   .reg-item-fields { display:grid;grid-template-columns:1fr 1fr 80px;gap:8px; }
-  .reg-item-resolver { background:transparent;border:1px solid var(--accent);color:var(--accent);border-radius:6px;padding:4px 10px;font-size:11px;font-family:'DM Sans',sans-serif;cursor:pointer; }
+  .reg-item-resolver { background:transparent;border:1px solid var(--accent);color:var(--accent);border-radius:6px;padding:4px 10px;font-size:11px;font-family:inherit;cursor:pointer; }
   .reg-footer { padding:14px 20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0;gap:10px; }
-  .reg-btn-cancel { background:transparent;border:1px solid var(--border);color:var(--text3);border-radius:10px;padding:10px 16px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer; }
-  .reg-btn-confirm { background:var(--accent);color:#000;border:none;border-radius:10px;padding:10px 20px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:13px;cursor:pointer; }
+  .reg-btn-cancel { background:transparent;border:1px solid var(--border);color:var(--text3);border-radius:10px;padding:10px 16px;font-family:inherit;font-size:13px;cursor:pointer; }
+  .reg-btn-confirm { background:var(--accent);color:#fff;border:none;border-radius:10px;padding:10px 20px;font-family:inherit;font-weight:600;font-size:13px;cursor:pointer; }
   .reg-btn-confirm:disabled { opacity:0.35;cursor:not-allowed; }
   
   /* ── TAB BAR ── */
@@ -310,14 +316,14 @@
   .tab-item { flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 4px;cursor:pointer;gap:2px;transition:all 0.15s;border:none;background:transparent;height:100%; }
   .tab-item:active { background:var(--surface2); }
   .tab-icon { font-size:20px;line-height:1; }
-  .tab-label { font-size:11px;color:var(--text3);font-family:'Plus Jakarta Sans',sans-serif;letter-spacing:0.02em;transition:color 0.15s; }
+  .tab-label { font-size:11px;color:var(--text3);font-family:inherit;letter-spacing:0.02em;transition:color 0.15s; }
   .tab-item.active .tab-label { color:var(--accent); }
   .tab-item.active .tab-icon { transform:translateY(-1px); }
   .seccion-bloque { display:none !important; padding: 20px; padding-bottom: var(--tab-height); }
   .seccion-bloque.activa { display:block !important; }
   
   /* Botón limpiar lista */
-  .lista-clear-btn { background: transparent; border: 1px solid var(--border); color: var(--text3); padding: 5px 13px; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 11px; cursor: pointer; transition: all 0.2s; }
+  .lista-clear-btn { background: transparent; border: 1px solid var(--border); color: var(--text3); padding: 5px 13px; border-radius: 8px; font-family:inherit; font-size: 11px; cursor: pointer; transition: all 0.2s; }
   .lista-clear-btn:hover { border-color: var(--red); color: var(--red); }
 
   @media (max-width: 680px) {
@@ -326,45 +332,66 @@
   }
 
   /* ══════════════════════════════════════════════════════
-     MÓDULO: PENDIENTES (tickets por foto)
+     VISTAS EN TARJETAS (tickets, catálogo, resumen) Y DUDAS
   ══════════════════════════════════════════════════════ */
-  .pend-lista { display:flex; flex-direction:column; gap:10px; padding:16px; }
-  .pend-vacia { text-align:center; padding:32px 16px; color:var(--text3); font-size:14px; border:1px dashed var(--border); border-radius:10px; }
-  .pend-card { background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:12px 14px; cursor:pointer; display:flex; flex-direction:column; gap:6px; }
-  .pend-card:hover { border-color:var(--accent); }
-  .pend-card-top { display:flex; align-items:center; justify-content:space-between; gap:8px; }
-  .pend-card-total { font-size:17px; font-weight:700; color:var(--accent); }
-  .pend-card-sub { font-size:13px; color:var(--text3); }
-  .pend-chips { display:flex; flex-wrap:wrap; gap:6px; }
-  .pend-chip { font-size:11px; padding:2px 8px; border-radius:10px; background:var(--surface2); color:var(--text2); border:1px solid var(--border); }
-  .pend-chip.ok   { color:var(--green); border-color:rgba(76,175,125,0.35); }
-  .pend-chip.warn { color:#f5a623; border-color:rgba(245,166,35,0.35); }
-  .pend-chip.dup  { color:var(--purple); border-color:rgba(155,127,232,0.35); }
-  .pend-modal { max-width:760px; }
-  .pend-banner { border-radius:10px; padding:10px 12px; font-size:13px; line-height:1.45; }
-  .pend-banner.warn { background:rgba(245,166,35,0.08); border:1px solid rgba(245,166,35,0.4); color:var(--text2); }
-  .pend-banner.info { background:var(--surface2); border:1px solid var(--border); color:var(--text2); }
-  .pend-banner.dup  { background:rgba(155,127,232,0.08); border:1px solid rgba(155,127,232,0.4); color:var(--text2); }
-  .pend-banner ul { margin:4px 0 0 18px; }
-  .pend-fotos img { width:100%; border-radius:8px; margin-top:8px; display:block; }
-  .pend-item { background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:10px 12px; display:flex; flex-direction:column; gap:7px; }
-  .pend-item.baja { border-color:rgba(245,166,35,0.55); }
-  .pend-item.quitado { opacity:0.4; }
-  .pend-item-texto { font-family:ui-monospace,Consolas,monospace; font-size:12px; color:var(--text3); display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap; }
-  .pend-match { font-size:10px; padding:1px 7px; border-radius:8px; font-weight:700; letter-spacing:0.03em; font-family:'Plus Jakarta Sans',sans-serif; }
-  .pend-match.codigo, .pend-match.equivalencia { background:rgba(76,175,125,0.15); color:var(--green); }
-  .pend-match.catalogo { background:rgba(79,142,247,0.15); color:var(--accent); }
-  .pend-match.nuevo { background:rgba(245,166,35,0.15); color:#f5a623; }
-  .pend-item-fila { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-  .pend-item-fila .edit-label { display:flex; flex-direction:column; gap:3px; }
-  .tab-cuenta { position:absolute; top:4px; margin-left:16px; background:var(--accent); color:#fff; font-size:10px; font-weight:700; border-radius:9px; padding:0 5px; line-height:16px; }
-  .pend-cand { font-size:12px; padding:3px 9px; border-radius:12px; border:1px solid var(--border); background:var(--bg); color:var(--text2); cursor:pointer; }
-  .pend-cand.sug { border-color:var(--green); color:var(--green); }
-  .pend-item-pie { display:flex; justify-content:space-between; align-items:center; gap:8px; font-size:12px; color:var(--text3); }
-  .pend-toast { position:fixed; left:50%; bottom:calc(var(--tab-height) + 16px); transform:translateX(-50%); background:var(--surface2); border:1px solid var(--border); color:var(--text); padding:10px 16px; border-radius:10px; font-size:14px; z-index:950; box-shadow:0 8px 28px rgba(0,0,0,0.5); }
+  .table-scroll { height:auto; max-height:none; min-height:0; overflow:visible; }
+  .vacio { text-align:center; padding:36px 20px; color:var(--text2); font-size:14px; line-height:1.6; }
+  .tk-lista { display:flex; flex-direction:column; gap:10px; padding:14px; }
+  .tk-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+  .tk-head { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px 14px; cursor:pointer; }
+  .tk-head:active { background:var(--surface2); }
+  .tk-head-izq { display:flex; flex-direction:column; gap:3px; min-width:0; }
+  .tk-total { font-size:18px; font-weight:900; color:var(--text); white-space:nowrap; }
+  .tk-sub { font-size:12.5px; color:var(--text3); }
+  .tk-flecha { color:var(--text3); font-size:12px; transition:transform .2s; }
+  .tk-card.abierto .tk-flecha { transform:rotate(180deg); }
+  .tk-items { display:none; border-top:1px solid var(--border); }
+  .tk-card.abierto .tk-items { display:block; }
+  .tk-item { display:flex; justify-content:space-between; gap:10px; padding:9px 14px; border-bottom:1px solid var(--surface2); cursor:pointer; }
+  .tk-item:last-child { border-bottom:none; }
+  .tk-item:active { background:var(--surface2); }
+  .tk-item-nombre { font-size:14px; font-weight:700; line-height:1.3; }
+  .tk-item-det { font-size:12px; color:var(--text3); margin-top:2px; }
+  .tk-item-precio { font-size:14px; font-weight:800; white-space:nowrap; text-align:right; }
+  .tk-item-precio small { display:block; font-weight:600; color:var(--text3); font-size:11.5px; }
+  .tk-promo { color:var(--green); }
+  .cat-grupo { font-size:12px; font-weight:800; color:var(--text3); text-transform:uppercase; letter-spacing:.06em; padding:10px 4px 2px; }
+  .cat-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:12px 14px; }
+  .cat-nombre { font-weight:800; font-size:14.5px; line-height:1.3; }
+  .cat-precios { display:flex; flex-direction:column; gap:4px; margin-top:8px; }
+  .cat-precio { display:flex; justify-content:space-between; align-items:center; gap:8px; font-size:13.5px; cursor:pointer; padding:3px 0; }
+  .cat-precio b { font-weight:900; }
+  .cat-mejor b { color:var(--green); }
+  .stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px; padding:14px 14px 0; }
+  .stat { background:var(--surface2); border-radius:14px; padding:12px 14px; }
+  .stat-label { font-size:12px; color:var(--text2); font-weight:700; }
+  .stat-valor { font-size:22px; font-weight:900; margin-top:2px; }
+  .stat-valor.verde { color:var(--green); }
+  .barra-fila { display:grid; grid-template-columns:96px 1fr auto; align-items:center; gap:10px; font-size:13.5px; padding:5px 0; }
+  .barra { height:10px; background:var(--surface2); border-radius:6px; overflow:hidden; }
+  .barra > span { display:block; height:100%; background:var(--accent); border-radius:6px; }
+  .res-bloque { padding:14px; }
+  .res-titulo { font-weight:900; font-size:15px; margin-bottom:6px; }
+  .tab-cuenta { position:absolute; top:5px; left:calc(50% + 6px); background:var(--accent); color:#fff; font-size:10.5px; font-weight:900; border-radius:9px; padding:0 6px; line-height:17px; }
+  .tab-item { position:relative; }
+  .dudas-intro { padding:14px 16px 0; color:var(--text2); font-size:14px; }
+  .duda-card { margin:12px 14px; background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:14px; display:flex; flex-direction:column; gap:10px; box-shadow:var(--sombra); transition:opacity .3s, transform .3s; }
+  .duda-card.respondida { opacity:0; transform:translateX(30px); }
+  .duda-top { display:flex; align-items:center; justify-content:space-between; gap:8px; font-size:12.5px; color:var(--text3); }
+  .duda-texto { font-family:ui-monospace,Consolas,monospace; font-size:20px; font-weight:700; letter-spacing:.02em; }
+  .duda-porque { font-size:14.5px; color:var(--text2); }
+  .duda-ops { display:flex; flex-direction:column; gap:8px; }
+  .duda-op { text-align:left; background:var(--surface2); border:1.5px solid var(--border); border-radius:12px; padding:11px 14px; font-size:15px; font-weight:700; color:var(--text); cursor:pointer; }
+  .duda-op:hover, .duda-op:active { border-color:var(--accent); background:rgba(238,90,31,0.08); }
+  .duda-op.quitar { color:var(--red); }
+  .duda-otro { display:grid; grid-template-columns:1fr auto; gap:8px; }
+  .duda-foto-btn { background:none; border:none; color:var(--accent-dark); font-weight:800; font-size:13px; cursor:pointer; text-align:left; padding:0; }
+  .duda-img { width:100%; border-radius:10px; margin-top:4px; display:block; }
+  .toast { position:fixed; left:50%; bottom:calc(var(--tab-height) + 16px); transform:translateX(-50%); background:var(--text); color:#fff; padding:10px 16px; border-radius:12px; font-size:14px; font-weight:700; z-index:950; box-shadow:0 8px 28px rgba(120,60,20,0.25); max-width:90vw; }
   @media (max-width: 600px) {
+    .seccion-bloque { padding:10px !important; padding-bottom:calc(var(--tab-height) + 10px) !important; }
     .edit-overlay { padding:0; }
-    .pend-modal { max-height:100vh; height:100vh; border-radius:0; }
+    .edit-modal { max-height:100vh; height:100vh; border-radius:0; max-width:none; }
   }
 </style>
 </head>
@@ -372,10 +399,13 @@
 
 <header class="header">
   <div class="header-left">
-    <h1>🛒 Mandadito</h1>
-    <span class="header-sub" id="header-sub">Cancún · cargando...</span>
+    <img src="logo-icono.png" class="header-icono" alt="">
+    <div>
+      <img src="logo-texto.png" class="header-texto" alt="Mandadito">
+      <span class="header-sub" id="header-sub">cargando…</span>
+    </div>
   </div>
-  <button class="dl-btn" onclick="exportarCSV()">⬇ Exportar CSV</button>
+  <button class="icon-btn" onclick="exportarCSV()" title="Descargar todo en CSV">⬇ CSV</button>
 </header>
 
 <!-- Loading overlay -->
@@ -383,7 +413,7 @@
   position:fixed;inset:0;background:var(--bg);z-index:9999;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
 ">
-  <div style="font-family:'DM Serif Display',serif;font-size:28px;color:var(--accent);">🛒</div>
+  <img src="logo-icono.png" alt="" style="width:72px;height:72px;">
   <div style="font-size:13px;color:var(--text2);" id="loading-msg">Cargando datos...</div>
   <div style="width:200px;height:3px;background:var(--border);border-radius:2px;overflow:hidden;">
     <div id="loading-bar" style="height:100%;width:0%;background:var(--accent);transition:width 0.4s ease;"></div>
@@ -402,32 +432,31 @@
 // CONFIGURACIÓN DE TIENDAS (estática)
 // ══════════════════════════════════════════════════════════════
 var CONFIG_TIENDAS = {
-  costco:    { clave:'costco',    etiqueta:'Costco',        color:'#4caf7d', emoji:'🟢' },
-  walmart:   { clave:'walmart',   etiqueta:'Walmart',       color:'#5b9bd5', emoji:'🔵' },
-  chedraui:  { clave:'chedraui',  etiqueta:'Chedraui',      color:'#f5a623', emoji:'🟠' },
-  chedpm:    { clave:'chedpm',    etiqueta:'Chedraui P.M.', color:'#2ab5b5', emoji:'🔵' },
-  aki:       { clave:'aki',       etiqueta:'Super Aki',     color:'#9b7fe8', emoji:'🟣' },
-  ml:        { clave:'ml',        etiqueta:'MercadoLibre',  color:'#e05252', emoji:'🔴' },
-  pachamama: { clave:'pachamama', etiqueta:'Pachamama P.M.',color:'#4caf50', emoji:'🟢' },
-  aurrera:   { clave:'aurrera',   etiqueta:'Bodega Aurrera',color:'#e8c33a', emoji:'🟡' },
-  oceanleader:{ clave:'oceanleader', etiqueta:'Ocean Leader', color:'#3aa0e8', emoji:'🐟' },
-  multiproteinas:{ clave:'multiproteinas', etiqueta:'Multiproteínas', color:'#c0573e', emoji:'🥩' },
-  similares: { clave:'similares', etiqueta:'Farmacias Similares', color:'#5bb8a8', emoji:'💊' },
-  delsol:    { clave:'delsol',    etiqueta:'Tiendas Del Sol', color:'#e87fb0', emoji:'🍬' },
-  oxxo:      { clave:'oxxo',      etiqueta:'Oxxo',          color:'#d94a3d', emoji:'🏪' },
-  gomart:    { clave:'gomart',    etiqueta:'GoMart',        color:'#8a8a8a', emoji:'🏪' },
-  velvet:    { clave:'velvet',    etiqueta:'Papelería Velvet', color:'#a07de0', emoji:'✏️' },
+  costco:    { clave:'costco',    etiqueta:'Costco',        color:'#1E8E3E', emoji:'🟢' },
+  walmart:   { clave:'walmart',   etiqueta:'Walmart',       color:'#2F6FDB', emoji:'🔵' },
+  chedraui:  { clave:'chedraui',  etiqueta:'Chedraui',      color:'#D97706', emoji:'🟠' },
+  chedpm:    { clave:'chedpm',    etiqueta:'Chedraui P.M.', color:'#0E8C82', emoji:'🔵' },
+  aki:       { clave:'aki',       etiqueta:'Super Aki',     color:'#7B5BD6', emoji:'🟣' },
+  ml:        { clave:'ml',        etiqueta:'MercadoLibre',  color:'#C9372C', emoji:'🔴' },
+  pachamama: { clave:'pachamama', etiqueta:'Pachamama P.M.',color:'#4D8B31', emoji:'🟢' },
+  aurrera:   { clave:'aurrera',   etiqueta:'Bodega Aurrera',color:'#A86B00', emoji:'🟡' },
+  oceanleader:{ clave:'oceanleader', etiqueta:'Ocean Leader', color:'#1F7FC2', emoji:'🐟' },
+  multiproteinas:{ clave:'multiproteinas', etiqueta:'Multiproteínas', color:'#B5482F', emoji:'🥩' },
+  similares: { clave:'similares', etiqueta:'Farmacias Similares', color:'#2F8F7F', emoji:'💊' },
+  delsol:    { clave:'delsol',    etiqueta:'Tiendas Del Sol', color:'#C2457E', emoji:'🍬' },
+  oxxo:      { clave:'oxxo',      etiqueta:'Oxxo',          color:'#C7372B', emoji:'🏪' },
+  gomart:    { clave:'gomart',    etiqueta:'GoMart',        color:'#6F6259', emoji:'🏪' },
+  velvet:    { clave:'velvet',    etiqueta:'Papelería Velvet', color:'#7A5BC8', emoji:'✏️' },
 };
 
 // ── GUÍA DE USO (estática) ────────────────────────────────────
 const GUIA = [
-  { pregunta: '📸 Foto del ticket', respuesta: 'Tómale foto completa y súbela a la carpeta Tickets-compras de Drive. Si es largo, en varias fotos seguidas.' },
-  { pregunta: '💻 En la laptop', respuesta: 'Claude Code corre el pipeline (tools/): lee las fotos, empata cada renglón con el catálogo y valida contra el total.' },
-  { pregunta: '📥 Pendientes', respuesta: 'Aquí llegan los tickets leídos. Revisa los marcados como NUEVO o dudosos, corrige el producto si hace falta y Aprueba.' },
-  { pregunta: '✅ Al aprobar', respuesta: 'Se guarda en Firebase la próxima vez que corre el pipeline (con respaldo). Lo que apruebas enseña: el mismo texto del ticket ya llega resuelto la siguiente vez.' },
-  { pregunta: '🔒 Datos de pago', respuesta: 'No se transcriben tarjeta, afiliación, autorización ni RFC, y esa parte de la foto se tapa antes de subirla.' },
-  { pregunta: '📋 Registrar ticket', respuesta: 'Para capturar a mano un JSON (botón al final de la Lista).' },
-  { pregunta: '⬇ Exportar CSV', respuesta: 'Descarga todos los artículos como CSV para abrir en Excel o Sheets.' },
+  { pregunta: '📸 Tickets', respuesta: 'Tómale foto al ticket completo y súbela a la carpeta Tickets-compras de Drive. Si es largo, en varias fotos seguidas.' },
+  { pregunta: '💻 En la laptop', respuesta: 'Claude Code lee las fotos, empata cada renglón con el catálogo, valida contra el total y guarda el ticket. No tienes que revisar tickets.' },
+  { pregunta: '❓ Dudas', respuesta: 'Solo cuando un renglón puede ser varias cosas (¿MILANESA de pollo o de res?) te pregunta ahí. Un toque y listo; la respuesta se aprende para la próxima.' },
+  { pregunta: '🛒 Lista', respuesta: 'La lista compartida. Cada producto muestra el mejor precio conocido y la ruta sugerida dice en qué tienda conviene cada cosa.' },
+  { pregunta: '🔒 Datos de pago', respuesta: 'No se guardan tarjeta, afiliación, autorización ni RFC, y esa parte de la foto se tapa antes de subirla.' },
+  { pregunta: '✏️ Corregir', respuesta: 'Toca cualquier artículo en Tickets o Catálogo para editarlo.' },
 ];
 
 // ══════════════════════════════════════════════════════════════
@@ -522,6 +551,31 @@ function fechaISO(fecha) {
   return m[3] + '-' + ('0' + m[2]).slice(-2) + '-' + ('0' + m[1]).slice(-2);
 }
 
+// "DD/MM/AAAA" o "AAAA-MM-DD" -> "13 jul 2026"
+function fechaBonita(fecha) {
+  var iso = fechaISO(fecha);
+  var p = iso.split('-');
+  if (p.length !== 3) return fecha || '';
+  return (+p[2]) + ' ' + ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'][+p[1] - 1] + ' ' + p[0];
+}
+
+// "$59.90/kg" dentro de un texto -> 59.9 (o null si no hay precio por kilo)
+function precioPorKilo(texto) {
+  var m = String(texto || '').match(/\$\s?(\d+(?:\.\d+)?)\s?\/\s?kg/i);
+  return m ? parseFloat(m[1]) : null;
+}
+
+// "0.550kg · $9.50/kg" -> "0.55 kg × $9.50/kg" para mostrar en el ticket
+function detalleGranel(notas) {
+  var m = String(notas || '').match(/(\d+(?:\.\d+)?)\s?kg\s*·\s*\$(\d+(?:\.\d+)?)\/kg/i);
+  return m ? (+m[1]) + ' kg × $' + (+m[2]).toFixed(2) + '/kg' : '';
+}
+
+// Monto redondeado sin centavos: "$49,267"
+function pesos(valor) {
+  return '$' + Math.round(valor || 0).toLocaleString('es-MX');
+}
+
 // Formatea un número como precio en pesos mexicanos
 function formatearPrecio(valor) {
   var numero = parseFloat(String(valor).replace(/[$,]/g, ''));
@@ -563,163 +617,149 @@ function obtenerClaseNota(nota) {
 // CONSTRUCCIÓN DE LA UI
 // ══════════════════════════════════════════════════════════════
 
-// Renderiza las tarjetas de resumen global en el header
-function renderSummaryBar() {
-  var totalGastado = SESIONES.reduce(function(acc, s) { return acc + s.total; }, 0);
-  var totalAhorrado = SESIONES.reduce(function(acc, s) { return acc + s.ahorro; }, 0);
-  var tiendas = new Set(SESIONES.map(function(s) { return s.tienda; }));
-  var totalArticulos = TICKETS.length;
-
-  var tarjetas = [
-    { etiqueta: 'Total gastado',       valor: formatearPrecio(totalGastado),   clase: 'accent', sub: tiendas.size + ' tiendas' },
-    { etiqueta: 'Total ahorrado',      valor: formatearPrecio(totalAhorrado),  clase: 'green',  sub: 'en descuentos' },
-    { etiqueta: 'Artículos en tickets',valor: totalArticulos,                  clase: '',       sub: TICKETS.filter(function(t){return t.tipo==='compra';}).length + ' compras · ' + TICKETS.filter(function(t){return t.tipo==='observacion';}).length + ' observaciones' },
-    { etiqueta: 'Catálogo de precios', valor: CATALOGO.length,                clase: '',       sub: 'productos referenciados' },
-  ];
-
-  document.getElementById('summaryBar').innerHTML = tarjetas.map(function(t) {
-    return '<div class="stat-card">' +
-      '<div class="stat-card-label">' + t.etiqueta + '</div>' +
-      '<div class="stat-card-value ' + t.clase + '">' + t.valor + '</div>' +
-      '<div class="stat-card-sub">' + t.sub + '</div>' +
-      '</div>';
-  }).join('');
-}
-
-// HTML estático de la leyenda de tiendas
-var HTML_LEYENDA = '<div class="legend">' +
-  Object.values(CONFIG_TIENDAS).map(function(cfg) {
-    return '<div class="legend-item">' +
-      '<div class="legend-dot" style="background:' + cfg.color + '"></div>' +
-      cfg.etiqueta + '</div>';
-  }).join('') +
-  '</div>';
-
-// Renderiza la tabla de tickets con filtros
+// Tickets: una tarjeta por ticket (sesión); se abre para ver los artículos
 function renderTablaTickets(filtroTexto, filtroTienda) {
   var datos = TICKETS;
-
   if (filtroTexto) {
-    var txt = filtroTexto.toLowerCase();
+    var txt = listaNormalizar(filtroTexto);
     datos = datos.filter(function(t) {
-      return [t.producto, t.categoria, t.subcategoria, t.ciudad, t.notas].join(' ').toLowerCase().includes(txt);
+      return listaNormalizar([t.producto, t.categoria, t.subcategoria, t.textoTicket].join(' ')).includes(txt);
     });
   }
+  if (filtroTienda) datos = datos.filter(function(t) { return t.tienda === filtroTienda; });
 
-  if (filtroTienda) {
-    datos = datos.filter(function(t) { return t.tienda === filtroTienda; });
-  }
+  var sesiones = {};
+  SESIONES.forEach(function(s) { sesiones[s._key] = s; });
 
-  var compras = datos.filter(function(t) { return t.tipo === 'compra'; });
-  var conteo = compras.length;
-
-  // Agrupar por tienda+fecha para insertar encabezados de sección
-  var filas = '';
-  var seccionActual = '';
-
-  datos.forEach(function(ticket) {
-    // Con sesión, cada ticket va en su propio grupo aunque haya dos el mismo día
-    var seccionClave = ticket.sesion || (ticket.tienda + '|' + ticket.fecha);
-    var config = CONFIG_TIENDAS[ticket.tienda] || {};
-    var etiquetaTienda = config.etiqueta || ticket.tienda;
-
-    if (seccionClave !== seccionActual) {
-      seccionActual = seccionClave;
-      var emoji = ticket.tipo === 'observacion' ? '👁️' : '🛒';
-      filas += '<tr class="section-hdr"><td colspan="8">' +
-        emoji + '  ' + etiquetaTienda + ' — ' + ticket.fecha +
-        '</td></tr>';
+  // Agrupar conservando el orden (ya vienen por fecha, lo más reciente arriba)
+  var grupos = [];
+  var porClave = {};
+  datos.forEach(function(t) {
+    var clave = t.sesion || (t.tipo + '|' + t.tienda + '|' + t.fecha);
+    if (!porClave[clave]) {
+      porClave[clave] = { sesion: sesiones[t.sesion], tienda: t.tienda, fecha: t.fecha, obs: t.tipo === 'observacion', items: [] };
+      grupos.push(porClave[clave]);
     }
-
-    var totalLinea = ticket.precio * ticket.cantidad;
-    var ticketKey = ticket._key;
-    filas += '<tr class="row-' + ticket.tienda + '" style="cursor:pointer" onclick="editAbrirPorKey(\'tickets\',\'' + ticketKey + '\')">' +
-      '<td style="color:var(--text3);white-space:nowrap">' + ticket.fecha + '</td>' +
-      '<td>' + renderBadgeTienda(ticket.tienda) + '</td>' +
-      '<td style="color:var(--text3)">' + ticket.ciudad + '</td>' +
-      '<td style="font-weight:500;max-width:240px">' + ticket.producto + '</td>' +
-      '<td style="color:var(--text3);font-size:11px">' + ticket.categoria + '</td>' +
-      '<td style="color:var(--text3);font-size:11px">' + (ticket.subcategoria || '') + '</td>' +
-      '<td class="price-cell">' + formatearPrecio(ticket.precio) + '</td>' +
-      '<td style="color:var(--text3)">' + ticket.cantidad + '</td>' +
-      '<td><span class="' + obtenerClaseNota(ticket.notas) + '">' + (ticket.notas || '') + '</span></td>' +
-      '</tr>';
+    porClave[clave].items.push(t);
   });
 
-  return { conteo: { compras: conteo, obs: datos.filter(function(t){return t.tipo==='observacion';}).length }, html: '<table>' +
-    '<thead><tr><th>Fecha</th><th>Tienda</th><th>Ciudad</th><th>Producto</th><th>Categoría</th><th>Subcategoría</th><th>Precio</th><th>Cant.</th><th>Notas</th></tr></thead>' +
-    '<tbody>' + filas + '</tbody></table>' };
+  var abrir = !!filtroTexto;
+  var html = grupos.map(function(g) {
+    var suma = g.items.reduce(function(a, t) { return a + t.precio * (t.cantidad || 1); }, 0);
+    var total = g.sesion && !filtroTexto ? g.sesion.total : suma;
+    var sub = g.obs ? '👁️ precios vistos, sin comprar · ' + g.items.length
+                    : g.items.length + (g.items.length === 1 ? ' artículo' : ' artículos');
+    if (g.sesion && g.sesion.ahorro) sub += ' · ahorraste ' + formatearPrecio(g.sesion.ahorro);
+    if (g.sesion && g.sesion.origen === 'foto') sub += ' · 📸';
+    var items = g.items.map(function(t) {
+      var granel = detalleGranel(t.notas);
+      var det = granel || [t.presentacion, t.cantidad > 1 ? t.cantidad + ' × ' + formatearPrecio(t.precio) : ''].filter(Boolean).join(' · ');
+      var promo = /promo|ahorro|rebaja/i.test(t.notas || '') ? ' <span class="tk-promo">· promo</span>' : '';
+      return '<div class="tk-item" onclick="editAbrirPorKey(\'tickets\',\'' + t._key + '\')">' +
+        '<div><div class="tk-item-nombre">' + esc(t.producto) + '</div>' +
+          '<div class="tk-item-det">' + esc(det) + promo + '</div></div>' +
+        '<div class="tk-item-precio">' + formatearPrecio(t.precio * (t.cantidad || 1)) + '</div>' +
+      '</div>';
+    }).join('');
+    return '<div class="tk-card' + (abrir ? ' abierto' : '') + '">' +
+      '<div class="tk-head" onclick="this.parentNode.classList.toggle(\'abierto\')">' +
+        '<div class="tk-head-izq"><div>' + renderBadgeTienda(g.tienda) + ' <span class="tk-sub">' + fechaBonita(g.fecha) + '</span></div>' +
+          '<div class="tk-sub">' + sub + '</div></div>' +
+        '<div style="display:flex;align-items:center;gap:8px"><span class="tk-total">' + formatearPrecio(total) + '</span><span class="tk-flecha">▼</span></div>' +
+      '</div>' +
+      '<div class="tk-items">' + items + '</div>' +
+    '</div>';
+  }).join('');
+
+  var compras = grupos.filter(function(g) { return !g.obs; }).length;
+  return {
+    conteo: { compras: compras, obs: grupos.length - compras },
+    html: '<div class="tk-lista">' + (html || '<div class="vacio">Nada con ese filtro.</div>') + '</div>'
+  };
 }
 
-// Renderiza el catálogo de precios
+// Catálogo: una tarjeta por producto con su precio en cada tienda, el más barato en verde
 function renderTablaCatalogo(filtroTexto, filtroTienda) {
   var datos = CATALOGO;
-
   if (filtroTexto) {
-    var txt = filtroTexto.toLowerCase();
+    var txt = listaNormalizar(filtroTexto);
     datos = datos.filter(function(p) {
-      return [p.producto, p.categoria, p.subcategoria, p.ciudad, p.notas].join(' ').toLowerCase().includes(txt);
+      return listaNormalizar([p.producto, p.categoria, p.subcategoria].join(' ')).includes(txt);
     });
   }
+  if (filtroTienda) datos = datos.filter(function(p) { return obtenerClaveTienda(p.tienda) === filtroTienda; });
 
-  if (filtroTienda) {
-    datos = datos.filter(function(p) { return obtenerClaveTienda(p.tienda) === filtroTienda; });
-  }
+  var porProducto = {};
+  datos.forEach(function(p) {
+    var k = listaNormalizar(p.producto);
+    (porProducto[k] = porProducto[k] || []).push(p);
+  });
+  var productos = Object.keys(porProducto).map(function(k) { return porProducto[k]; });
+  productos.sort(function(a, b) {
+    return (a[0].categoria || '').localeCompare(b[0].categoria || '', 'es') || a[0].producto.localeCompare(b[0].producto, 'es');
+  });
 
-  var filas = datos.map(function(p) {
-    var clave = obtenerClaveTienda(p.tienda);
-    var pKey = p._key;
-    return '<tr class="row-' + clave + '" style="cursor:pointer" onclick="editAbrirPorKey(\'catalogo\',\'' + pKey + '\')">' +
-      '<td style="font-weight:500;max-width:240px">' + p.producto + '</td>' +
-      '<td style="color:var(--text3);font-size:11px">' + p.categoria + '</td>' +
-      '<td style="color:var(--text3);font-size:11px">' + (p.subcategoria || '') + '</td>' +
-      '<td style="color:var(--text3)">' + p.presentacion + '</td>' +
-      '<td>' + renderBadgeTienda(clave) + '</td>' +
-      '<td style="color:var(--text3)">' + p.ciudad + '</td>' +
-      '<td class="price-cell">' + formatearPrecio(p.precio) + '</td>' +
-      '<td style="color:var(--text2);font-size:11px">' + (p.precioUnidad || '') + '</td>' +
-      '<td><span class="' + obtenerClaseNota(p.notas) + '">' + (p.notas || '') + '</span></td>' +
-      '</tr>';
+  var catActual = null;
+  var html = productos.map(function(filas) {
+    filas.sort(function(a, b) { return parsearNumero(a.precio) - parsearNumero(b.precio); });
+    var p0 = filas[0];
+    var encabezado = '';
+    if (p0.categoria !== catActual) {
+      catActual = p0.categoria;
+      encabezado = '<div class="cat-grupo">' + pickerGetEmoji(catActual) + ' ' + esc(catActual || 'Sin categoría') + '</div>';
+    }
+    var precios = filas.map(function(p, i) {
+      return '<div class="cat-precio' + (i === 0 && filas.length > 1 ? ' cat-mejor' : '') + '" onclick="editAbrirPorKey(\'catalogo\',\'' + p._key + '\')">' +
+        '<span>' + renderBadgeTienda(obtenerClaveTienda(p.tienda)) + (p.presentacion && p.presentacion !== '—' ? ' <span class="tk-sub">' + esc(p.presentacion) + '</span>' : '') +
+          (p.precioUnidad ? '<span class="tk-sub" style="display:block;margin-top:2px">' + esc(p.precioUnidad) + '</span>' : '') + '</span>' +
+        '<b>' + formatearPrecio(p.precio) + '</b>' +
+      '</div>';
+    }).join('');
+    return encabezado + '<div class="cat-card"><div class="cat-nombre">' + esc(p0.producto) + '</div>' +
+      '<div class="cat-precios">' + precios + '</div></div>';
   }).join('');
 
-  return { conteo: datos.length, html: '<table>' +
-    '<thead><tr><th>Producto</th><th>Categoría</th><th>Subcategoría</th><th>Presentación</th><th>Tienda</th><th>Ciudad</th><th>Precio</th><th>Precio/unidad</th><th>Notas</th></tr></thead>' +
-    '<tbody>' + filas + '</tbody></table>' };
+  return { conteo: productos.length, html: '<div class="tk-lista">' + (html || '<div class="vacio">Nada con ese filtro.</div>') + '</div>' };
 }
 
-// Renderiza el resumen calculado automáticamente
+// Resumen: cuánto se gasta, por mes y por tienda
 function renderTablaResumen() {
-  var totalGastado = SESIONES.reduce(function(acc, s) { return acc + s.total; }, 0);
-  var totalAhorro  = SESIONES.reduce(function(acc, s) { return acc + s.ahorro; }, 0);
-
-  var filas = SESIONES.map(function(s) {
-    var config = CONFIG_TIENDAS[s.tienda] || {};
-    return '<tr class="row-' + s.tienda + '">' +
-      '<td style="font-weight:500">' + s.etiquetaOriginal + '</td>' +
-      '<td style="color:var(--text3)">' + s.fecha + '</td>' +
-      '<td class="price-cell" style="font-size:14px">' + formatearPrecio(s.total) + '</td>' +
-      '<td class="price-cell savings-val" style="font-size:14px">' + formatearPrecio(s.ahorro) + '</td>' +
-      '<td style="color:var(--text3);font-size:11px">' + (s.notas || '') + '</td>' +
-      '</tr>';
-  }).join('');
-
-  filas += '<tr class="total-row">' +
-    '<td>TOTAL</td><td></td>' +
-    '<td class="price-cell" style="font-size:17px">' + formatearPrecio(totalGastado) + '</td>' +
-    '<td class="price-cell savings-val" style="font-size:17px">' + formatearPrecio(totalAhorro) + '</td>' +
-    '<td></td></tr>';
-
-  return '<table class="resumen-table">' +
-    '<thead><tr><th>Tienda</th><th>Fecha</th><th>Total pagado</th><th>Ahorro</th><th>Notas</th></tr></thead>' +
-    '<tbody>' + filas + '</tbody></table>';
+  var total = SESIONES.reduce(function(a, s) { return a + (s.total || 0); }, 0);
+  var ahorro = SESIONES.reduce(function(a, s) { return a + (s.ahorro || 0); }, 0);
+  var porMes = {}, porTienda = {};
+  SESIONES.forEach(function(s) {
+    var mes = fechaISO(s.fecha).slice(0, 7);
+    porMes[mes] = (porMes[mes] || 0) + (s.total || 0);
+    porTienda[s.tienda] = (porTienda[s.tienda] || 0) + (s.total || 0);
+  });
+  var MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  function barras(mapa, etiqueta, orden) {
+    var claves = Object.keys(mapa).sort(orden);
+    var max = Math.max.apply(null, claves.map(function(k) { return mapa[k]; }).concat([1]));
+    return claves.map(function(k) {
+      return '<div class="barra-fila"><span>' + etiqueta(k) + '</span>' +
+        '<div class="barra"><span style="width:' + Math.round(mapa[k] / max * 100) + '%"></span></div>' +
+        '<b>' + pesos(mapa[k]) + '</b></div>';
+    }).join('');
+  }
+  return '<div class="stats">' +
+      '<div class="stat"><div class="stat-label">Gastado</div><div class="stat-valor">' + pesos(total) + '</div></div>' +
+      '<div class="stat"><div class="stat-label">Ahorrado en promos</div><div class="stat-valor verde">' + pesos(ahorro) + '</div></div>' +
+      '<div class="stat"><div class="stat-label">Tickets</div><div class="stat-valor">' + SESIONES.length + '</div></div>' +
+    '</div>' +
+    '<div class="res-bloque"><div class="res-titulo">Por mes</div>' +
+      barras(porMes, function(k) { var p = k.split('-'); return MESES[+p[1] - 1] + ' ' + p[0]; }, function(a, b) { return b.localeCompare(a); }) +
+    '</div>' +
+    '<div class="res-bloque"><div class="res-titulo">Por tienda</div>' +
+      barras(porTienda, function(k) { return (CONFIG_TIENDAS[k] || {}).etiqueta || k; }, function(a, b) { return porTienda[b] - porTienda[a]; }) +
+    '</div>';
 }
 
 // Renderiza la guía de uso
 function renderTablaGuia() {
-  var filas = GUIA.map(function(g) {
-    return '<tr><td>' + g.pregunta + '</td><td style="color:var(--text2)">' + g.respuesta + '</td></tr>';
-  }).join('');
-  return '<table class="guia-table"><tbody>' + filas + '</tbody></table>';
+  return '<div class="tk-lista">' + GUIA.map(function(g) {
+    return '<div class="cat-card"><div class="cat-nombre">' + g.pregunta + '</div><div class="tk-item-det" style="font-size:13.5px;margin-top:4px">' + g.respuesta + '</div></div>';
+  }).join('') + '</div>';
 }
 
 // ── Opciones de tiendas para el selector ──
@@ -748,7 +788,7 @@ function construirBloqueSección(config) {
         '<span class="sheet-name" style="color:' + config.color + '">' + config.nombre + '</span>' +
         '<span class="sheet-count" id="cnt-' + config.id + '">—</span>' +
       '</div>' +
-      (tieneFilters ? HTML_LEYENDA : '') +
+      
     '</div>' +
     toolbar +
     '<div class="table-scroll" id="tbl-' + config.id + '"></div>' +
@@ -758,7 +798,7 @@ function construirBloqueSección(config) {
 // Configuración de cada sección de la app
 var SECCIONES = [
   { id: 'lista',    nombre: 'Lista de compras',  icono: '📋', color: 'var(--accent)', tieneFilters: false },
-  { id: 'pendientes', nombre: 'Pendientes por aprobar', icono: '📥', color: 'var(--accent)', tieneFilters: false },
+  { id: 'dudas',    nombre: 'Dudas de tickets',   icono: '❓', color: 'var(--accent)', tieneFilters: false },
   { id: 'tickets',  nombre: 'Tickets',            icono: '🧾', color: 'var(--green)',  tieneFilters: true },
   { id: 'catalogo', nombre: 'Catálogo precios',   icono: '📦', color: 'var(--accent)', tieneFilters: true },
   { id: 'resumen',  nombre: 'Resumen',            icono: '📊', color: 'var(--blue)',   tieneFilters: false },
@@ -779,22 +819,21 @@ function actualizarSeccion(idSeccion) {
     // El módulo lista se renderiza con su propio sistema — no usa tabla
     renderModuloLista();
     return;
-  } else if (idSeccion === 'pendientes') {
+  } else if (idSeccion === 'dudas') {
     // Igual que la lista: el módulo pinta su propio contenido
-    pendRender();
+    dudasRender();
     return;
   } else if (idSeccion === 'tickets') {
     var resultado = renderTablaTickets(filtroTexto, filtroTienda);
     html = resultado.html;
-    conteo = resultado.conteo.compras + ' compras · ' + resultado.conteo.obs + ' observaciones';
+    conteo = resultado.conteo.compras + ' tickets' + (resultado.conteo.obs ? ' · ' + resultado.conteo.obs + ' de precios vistos' : '');
   } else if (idSeccion === 'catalogo') {
     var resultado = renderTablaCatalogo(filtroTexto, filtroTienda);
     html = resultado.html;
     conteo = resultado.conteo + ' productos';
   } else if (idSeccion === 'resumen') {
-    renderSummaryBar();
     html = renderTablaResumen();
-    conteo = SESIONES.length + ' sesiones';
+    conteo = SESIONES.length + ' tickets';
   } else if (idSeccion === 'guia') {
     html = renderTablaGuia();
     conteo = '';
@@ -889,14 +928,17 @@ var listaDropIdx    = -1;
 function construirIndicePrecios() {
   var indice = [];
 
-  // Fuente 1: TICKETS (precios reales pagados)
+  // Fuente 1: TICKETS (precios reales pagados). En granel el precio guardado
+  // es el importe de lo que se pesó; para comparar tiendas se usa el precio
+  // por kilo que viene en las notas ("0.550kg · $9.50/kg").
   TICKETS.forEach(function(t) {
     if (!t.producto || !t.precio) return;
+    var kilo = precioPorKilo(t.notas);
     indice.push({
       producto: t.producto,
       tienda:   t.tienda,
-      precio:   t.precio,
-      nota:     t.notas || ''
+      precio:   kilo || t.precio,
+      nota:     kilo ? 'por kg' : (t.notas || '')
     });
   });
 
@@ -904,11 +946,12 @@ function construirIndicePrecios() {
   if (typeof CATALOGO !== 'undefined') {
     CATALOGO.forEach(function(p) {
       if (!p.producto || !p.precio) return;
+      var kilo = precioPorKilo(p.precioUnidad);
       indice.push({
         producto: p.producto,
         tienda:   obtenerClaveTienda(p.tienda || ''),
-        precio:   parseFloat(String(p.precio).replace(/[$,]/g, '')) || 0,
-        nota:     p.nota || p.presentacion || ''
+        precio:   kilo || parseFloat(String(p.precio).replace(/[$,]/g, '')) || 0,
+        nota:     kilo ? 'por kg' : (p.nota || p.presentacion || '')
       });
     });
   }
@@ -1473,7 +1516,7 @@ function renderModuloLista() {
             '<input type="text" class="lista-input" id="lista-input" ' +
               'placeholder="Escribe y presiona Enter para agregar…" autocomplete="off" ' +
               'oninput="listaOnInput(this.value)" onkeydown="listaOnKeydown(event)" ' +
-              'style="font-size:16px;padding:14px 110px 14px 16px;border-color:var(--accent);box-shadow:0 0 0 3px rgba(79,142,247,0.12);">' +
+              'style="font-size:16px;padding:14px 110px 14px 16px;border-color:var(--accent);box-shadow:0 0 0 3px rgba(238,90,31,0.12);">' +
             '<button onclick="pickerAbrir()" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:var(--accent);color:#fff;border:none;border-radius:8px;padding:7px 12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">＋ Catálogo</button>' +
             '<div class="lista-dropdown" id="lista-dropdown"></div>' +
           '</div>' +
@@ -1926,7 +1969,7 @@ function regNuevoProducto(itemIdx, nombre) {
   // Mini modal
   var mini = document.createElement('div');
   mini.id = 'reg-nuevo-overlay';
-  mini.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:800;display:flex;align-items:center;justify-content:center;padding:16px;';
+  mini.style.cssText = 'position:fixed;inset:0;background:rgba(120,60,20,0.18);z-index:800;display:flex;align-items:center;justify-content:center;padding:16px;';
   mini.innerHTML =
     '<div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;width:100%;max-width:400px;overflow:hidden;">' +
       '<div style="padding:16px 20px;border-bottom:1px solid var(--border);">' +
@@ -2038,7 +2081,7 @@ function regRenderItems() {
             'oninput="regProductoInput(' + idx + ',this.value)" ' +
             'onblur="setTimeout(function(){var d=document.getElementById(\'reg-ac-' + idx + '\');if(d)d.style.display=\'none\'},150)" ' +
             'placeholder="Escribe para buscar...">' +
-          '<div id="reg-ac-' + idx + '" style="display:none;position:absolute;top:100%;left:0;right:0;background:var(--surface2);border:1px solid var(--border);border-radius:8px;z-index:700;max-height:200px;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,0.4);"></div>' +
+          '<div id="reg-ac-' + idx + '" style="display:none;position:absolute;top:100%;left:0;right:0;background:var(--surface2);border:1px solid var(--border);border-radius:8px;z-index:700;max-height:200px;overflow-y:auto;box-shadow:0 8px 24px rgba(120,60,20,0.15);"></div>' +
         '</div>' +
         '<div class="reg-field">' +
           '<label class="reg-label">Categoría</label>' +
@@ -2326,15 +2369,14 @@ function regCerrar() {
 // ARRANQUE
 // ══════════════════════════════════════════════════════════════
 // ══════════════════════════════════════════════════════════════
-// MÓDULO: PENDIENTES (tickets por foto)
-// Los tickets llegan a pipeline/pendientes desde tools/subir.py.
-// Aprobar los pasa a pipeline/aprobados (los escribe tools/aplicar.py,
-// con respaldo); Quitar los pasa a pipeline/descartados.
-// La app nunca escribe aquí en tickets/, sesiones/ ni catalogo/.
+// MÓDULO: DUDAS (tickets por foto)
+// Los tickets se guardan solos (tools/aplicar.py). Aquí solo llegan los
+// renglones que la lectura no pudo decidir: una pregunta por texto de
+// ticket (pipeline/preguntas). Contestar escribe pipeline/respuestas/{id};
+// la siguiente corrida de aplicar.py corrige esos artículos.
 // ══════════════════════════════════════════════════════════════
-var PEND = null;        // { id: ticket } tal como está en pipeline/pendientes
-var pendId = null;      // id del ticket abierto
-var pendEdit = null;    // copia editable del ticket abierto
+var DUDAS = null;       // { id: pregunta }
+var RESPUESTAS = {};    // { id: respuesta } ya contestadas, aún sin aplicar
 
 function esc(s) {
   return String(s == null ? '' : s).replace(/[&<>"']/g, function(c) {
@@ -2342,294 +2384,139 @@ function esc(s) {
   });
 }
 
-function pendFechaCorta(iso) {
-  var p = String(iso || '').split('-');
-  return p.length === 3 ? p[2] + '/' + p[1] + '/' + p[0] : iso;
-}
-
 // Nombres conocidos para el autocompletado (catálogo + tickets)
-function pendNombresConocidos() {
+function nombresConocidos() {
   var vistos = {};
   CATALOGO.concat(TICKETS).forEach(function(r) { if (r.producto) vistos[r.producto] = 1; });
   return Object.keys(vistos).sort(function(a, b) { return a.localeCompare(b, 'es'); });
 }
 
-function pendSuma(t) {
-  return (t.items || []).reduce(function(acc, i) {
-    return i.quitado ? acc : acc + (parseFloat(i.precio_unitario) || 0) * (parseFloat(i.cantidad) || 0);
-  }, 0);
+function dudasAbiertas() {
+  return DUDAS ? Object.keys(DUDAS).filter(function(id) { return !RESPUESTAS[id]; }) : [];
 }
 
-function pendActualizarTab() {
-  var n = PEND ? Object.keys(PEND).length : 0;
-  var tab = document.querySelector('.tab-item[data-tab="pendientes"]');
-  if (tab) {
-    var globo = tab.querySelector('.tab-cuenta');
-    if (!globo) {
-      globo = document.createElement('span');
-      globo.className = 'tab-cuenta';
-      tab.style.position = 'relative';
-      tab.appendChild(globo);
-    }
-    globo.textContent = n;
-    globo.style.display = n ? '' : 'none';
+function dudasActualizarTab() {
+  var n = dudasAbiertas().length;
+  var tab = document.querySelector('.tab-item[data-tab="dudas"]');
+  if (!tab) return;
+  var globo = tab.querySelector('.tab-cuenta');
+  if (!globo) {
+    globo = document.createElement('span');
+    globo.className = 'tab-cuenta';
+    tab.appendChild(globo);
   }
-  var cnt = document.getElementById('cnt-pendientes');
-  if (cnt) cnt.textContent = n + ' tickets';
+  globo.textContent = n;
+  globo.style.display = n ? '' : 'none';
 }
 
-function pendCargar() {
-  return window._fbGet('pipeline/pendientes').then(function(datos) {
-    PEND = datos || {};
-    pendActualizarTab();
-  });
+function dudasCargar() {
+  return Promise.all([window._fbGet('pipeline/preguntas'), window._fbGet('pipeline/respuestas')])
+    .then(function(r) {
+      DUDAS = r[0] || {};
+      RESPUESTAS = r[1] || {};
+      dudasActualizarTab();
+    });
 }
 
-function pendRender() {
-  var cont = document.getElementById('tbl-pendientes');
+function dudasRender() {
+  var cont = document.getElementById('tbl-dudas');
   if (!cont) return;
-  cont.style.height = 'auto';
-  cont.style.maxHeight = 'none';
-  if (PEND === null) {
-    cont.innerHTML = '<div class="pend-lista"><div class="pend-vacia">Cargando…</div></div>';
-    pendCargar().then(pendRender);
+  if (DUDAS === null) {
+    cont.innerHTML = '<div class="vacio">Cargando…</div>';
+    dudasCargar().then(dudasRender);
     return;
   }
-  var ids = Object.keys(PEND).sort(function(a, b) {
-    return (PEND[b].fecha || '').localeCompare(PEND[a].fecha || '');
-  });
+  var ids = dudasAbiertas();
+  var cnt = document.getElementById('cnt-dudas');
+  if (cnt) cnt.textContent = ids.length ? ids.length + (ids.length === 1 ? ' pregunta' : ' preguntas') : 'al día';
   if (!ids.length) {
-    cont.innerHTML = '<div class="pend-lista"><div class="pend-vacia">No hay tickets por aprobar. ' +
-      'Llegan aquí cuando se corre el pipeline en la laptop.</div></div>';
+    cont.innerHTML = '<div class="vacio"><div style="font-size:34px">✅</div>' +
+      '<b>Todo al día</b><br>Los tickets nuevos se guardan solos. Si algún renglón no se puede leer con seguridad, aparece aquí.</div>';
     return;
   }
-  cont.innerHTML = '<div class="pend-lista">' + ids.map(function(id) {
-    var t = PEND[id];
-    var items = t.items || [];
-    var dif = Math.round(((t.total || 0) - pendSuma(t)) * 100) / 100;
-    var nuevos = items.filter(function(i) { return i.match === 'nuevo'; }).length;
-    var dudosos = items.filter(function(i) { return i.confianza === 'baja'; }).length;
-    var chips = [
-      Math.abs(dif) <= 0.05 ? '<span class="pend-chip ok">✓ cuadra</span>'
-                            : '<span class="pend-chip warn">⚠ difiere ' + formatearPrecio(dif) + '</span>',
-      t.duplicadoDe ? '<span class="pend-chip dup">ya registrado</span>' : '',
-      (t.reemplaza || []).length && !t.duplicadoDe ? '<span class="pend-chip dup">sustituye ' + t.reemplaza.length + ' sueltos</span>' : '',
-      nuevos ? '<span class="pend-chip">' + nuevos + ' nuevos</span>' : '',
-      dudosos ? '<span class="pend-chip warn">' + dudosos + ' dudosos</span>' : '',
-    ].join('');
-    return '<div class="pend-card" onclick="pendAbrir(\'' + id + '\')">' +
-      '<div class="pend-card-top">' +
-        '<div>' + renderBadgeTienda(t.tienda) + ' <span class="pend-card-sub">' + pendFechaCorta(t.fecha) + '</span></div>' +
-        '<span class="pend-card-total">' + formatearPrecio(t.total) + '</span>' +
-      '</div>' +
-      '<div class="pend-card-sub">' + esc(t.sucursal || '') + ' · ' + items.length + ' artículos</div>' +
-      '<div class="pend-chips">' + chips + '</div>' +
-    '</div>';
-  }).join('') + '</div>';
+  cont.innerHTML = '<div class="dudas-intro">Solo dime qué es cada uno. Lo demás de esos tickets ya está guardado.</div>' +
+    '<datalist id="dudas-productos">' + nombresConocidos().map(function(n) { return '<option value="' + esc(n) + '">'; }).join('') + '</datalist>' +
+    ids.sort(function(a, b) { return (DUDAS[b].fecha || '').localeCompare(DUDAS[a].fecha || ''); }).map(dudaHTML).join('');
 }
 
-function pendAbrir(id) {
-  pendId = id;
-  pendEdit = JSON.parse(JSON.stringify(PEND[id]));
-  pendEdit.reemplazar = (pendEdit.reemplaza || []).length > 0;
-  var overlay = document.createElement('div');
-  overlay.className = 'edit-overlay';
-  overlay.id = 'pend-overlay';
-  overlay.innerHTML = pendModalHTML();
-  document.body.appendChild(overlay);
-  pendRefrescarSuma();
-}
-
-function pendCerrar() {
-  var o = document.getElementById('pend-overlay');
-  if (o) o.remove();
-  pendId = null;
-  pendEdit = null;
-}
-
-function pendModalHTML() {
-  var t = pendEdit;
-  var tiendaOpts = Object.values(CONFIG_TIENDAS).map(function(c) {
-    return '<option value="' + c.clave + '"' + (t.tienda === c.clave ? ' selected' : '') + '>' + c.emoji + ' ' + c.etiqueta + '</option>';
-  }).join('') + (CONFIG_TIENDAS[t.tienda] ? '' : '<option value="' + esc(t.tienda) + '" selected>' + esc(t.tienda) + '</option>');
-
-  var banners = '';
-  if (t.duplicadoDe || (t.reemplaza || []).length) {
-    banners += '<div class="pend-banner dup">' +
-      (t.duplicadoDe ? '🔁 Este ticket ya está registrado (sesión ' + esc(t.duplicadoDe) + ').' : '🔁 Hay artículos sueltos de este día sin ticket.') +
-      '<label style="display:flex;gap:8px;align-items:center;margin-top:6px;">' +
-        '<input type="checkbox" ' + (t.reemplazar ? 'checked' : '') + ' onchange="pendEdit.reemplazar=this.checked">' +
-        'Sustituir los ' + (t.reemplaza || []).length + ' artículos viejos por los de esta foto' +
-      '</label></div>';
-  }
-  if ((t.avisos || []).length) {
-    banners += '<div class="pend-banner warn">⚠ Revisar:<ul>' + t.avisos.map(function(a) { return '<li>' + esc(a) + '</li>'; }).join('') + '</ul></div>';
-  }
-  if ((t.dudas || []).length) {
-    banners += '<div class="pend-banner info">💬 Notas de la extracción:<ul>' + t.dudas.map(function(a) { return '<li>' + esc(a) + '</li>'; }).join('') + '</ul></div>';
-  }
-
-  var items = (t.items || []).map(function(i, n) { return pendItemHTML(i, n); }).join('');
-
-  return '<div class="edit-modal pend-modal">' +
-    '<div class="edit-header">' +
-      '<div class="edit-title">📥 Ticket por aprobar</div>' +
-      '<button class="edit-btn-cancel" onclick="pendCerrar()" style="border:none;font-size:18px;background:transparent;cursor:pointer;color:var(--text3)">✕</button>' +
+function dudaHTML(id) {
+  var q = DUDAS[id];
+  var veces = (q.items || []).length;
+  var ops = (q.opciones || []).map(function(o, n) {
+    return '<button class="duda-op' + (o.quitar ? ' quitar' : '') + '" onclick="dudaResponder(\'' + id + '\',' + n + ')">' +
+      esc(o.quitar ? (o.etiqueta || 'No contarlo') : o.producto) + '</button>';
+  }).join('');
+  return '<div class="duda-card" id="duda-' + id + '">' +
+    '<div class="duda-top">' + renderBadgeTienda(q.tienda) +
+      '<span>' + fechaBonita(q.fecha) + ' · ' + formatearPrecio(q.precio) + (veces > 1 ? ' · en ' + veces + ' tickets' : '') + '</span></div>' +
+    '<div class="duda-texto">' + esc(q.texto) + '</div>' +
+    (q.porque ? '<div class="duda-porque">' + esc(q.porque) + '</div>' : '') +
+    '<div class="duda-ops">' + ops + '</div>' +
+    '<div class="duda-otro">' +
+      '<input class="edit-input" list="dudas-productos" placeholder="Otro producto…" id="duda-otro-' + id + '">' +
+      '<button class="icon-btn" onclick="dudaResponderOtro(\'' + id + '\')">Guardar</button>' +
     '</div>' +
-    '<div class="edit-body">' +
-      '<div class="edit-row">' +
-        '<div class="edit-field"><label class="edit-label">Tienda</label>' +
-          '<select class="edit-select" onchange="pendEdit.tienda=this.value">' + tiendaOpts + '</select></div>' +
-        '<div class="edit-field"><label class="edit-label">Fecha del ticket</label>' +
-          '<input class="edit-input" type="date" value="' + esc(t.fecha) + '" onchange="pendEdit.fecha=this.value"></div>' +
-      '</div>' +
-      '<div class="edit-row">' +
-        '<div class="edit-field"><label class="edit-label">Total pagado</label>' +
-          '<input class="edit-input" type="number" step="0.01" value="' + t.total + '" oninput="pendEdit.total=parseFloat(this.value)||0;pendRefrescarSuma()"></div>' +
-        '<div class="edit-field"><label class="edit-label">Suma de artículos</label>' +
-          '<div id="pend-suma" class="edit-input" style="border:none;padding-left:0"></div></div>' +
-      '</div>' +
-      '<div class="pend-card-sub">' + esc(t.sucursal || '') + (t.ahorro ? ' · ahorro ' + formatearPrecio(t.ahorro) : '') + '</div>' +
-      banners +
-      '<button class="edit-btn-cancel" onclick="pendVerFotos(this)">📷 Ver foto del ticket</button>' +
-      '<div class="pend-fotos" id="pend-fotos"></div>' +
-      '<div class="reg-section-title" style="margin-top:6px">Artículos (' + (t.items || []).length + ')</div>' +
-      '<datalist id="pend-productos">' + pendNombresConocidos().map(function(n) { return '<option value="' + esc(n) + '">'; }).join('') + '</datalist>' +
-      items +
-    '</div>' +
-    '<div class="edit-footer">' +
-      '<button class="edit-btn-delete" onclick="pendQuitar()">🗑 Quitar ticket</button>' +
-      '<button class="edit-btn-save" onclick="pendAprobar()">✓ Aprobar</button>' +
-    '</div>' +
+    '<button class="duda-foto-btn" onclick="dudaVerFoto(\'' + id + '\', this)">📷 Ver el ticket</button>' +
+    '<div id="duda-foto-' + id + '"></div>' +
   '</div>';
 }
 
-function pendItemHTML(i, n) {
-  var cands = (i.sugerido ? [i.sugerido] : []).concat((i.candidatos || []).filter(function(c) { return c !== i.sugerido; }));
-  var candHTML = cands.length
-    ? '<div class="pend-chips">' + cands.map(function(c) {
-        return '<span class="pend-cand' + (c === i.sugerido ? ' sug' : '') + '" onclick="pendElegir(' + n + ', this.textContent)">' + esc(c) + '</span>';
-      }).join('') + '</div>'
-    : '';
-  var detalle = [];
-  if (i.granel) detalle.push(i.granel.peso_kg + ' kg × ' + formatearPrecio(i.granel.precio_kg) + '/kg');
-  if (i.descuento) detalle.push((i.promo || 'promo') + ' −' + formatearPrecio(i.descuento));
-  if (i.notas && !i.granel) detalle.push(i.notas);  // en granel las notas repiten peso y precio
-  return '<div class="pend-item' + (i.confianza === 'baja' ? ' baja' : '') + (i.quitado ? ' quitado' : '') + '" id="pend-item-' + n + '">' +
-    '<div class="pend-item-texto"><span>' + esc(i.texto) + (i.codigo ? ' · ' + esc(i.codigo) : '') + '</span>' +
-      '<span class="pend-match ' + esc(i.match) + '" id="pend-match-' + n + '">' + pendEtiquetaMatch(i) + '</span></div>' +
-    '<input class="edit-input" list="pend-productos" id="pend-prod-' + n + '" value="' + esc(i.producto) + '" oninput="pendCambiarProducto(' + n + ', this.value)">' +
-    '<div class="pend-item-fila">' +
-      '<label class="edit-label">Precio c/u<input class="edit-input" type="number" step="0.01" value="' + i.precio_unitario + '" oninput="pendEdit.items[' + n + '].precio_unitario=parseFloat(this.value)||0;pendRefrescarSuma()"></label>' +
-      '<label class="edit-label">Piezas<input class="edit-input" type="number" step="1" value="' + i.cantidad + '" oninput="pendEdit.items[' + n + '].cantidad=parseFloat(this.value)||0;pendRefrescarSuma()"></label>' +
-    '</div>' +
-    candHTML +
-    '<div class="pend-item-pie"><span>' + esc(detalle.join(' · ')) + '</span>' +
-      '<label style="white-space:nowrap"><input type="checkbox" ' + (i.quitado ? 'checked' : '') + ' onchange="pendQuitarItem(' + n + ', this.checked)"> quitar</label></div>' +
-  '</div>';
+function dudaGuardar(id, respuesta) {
+  respuesta.respondido_en = new Date().toISOString();
+  var card = document.getElementById('duda-' + id);
+  if (card) card.classList.add('respondida');
+  window._fbWrite('pipeline/respuestas/' + id, respuesta).then(function() {
+    RESPUESTAS[id] = respuesta;
+    dudasActualizarTab();
+    toast('✓ Anotado. Se corrige en la próxima actualización.');
+    setTimeout(dudasRender, 350);
+  }).catch(function(e) {
+    if (card) card.classList.remove('respondida');
+    alert('No se pudo guardar: ' + e.message);
+  });
 }
 
-function pendEtiquetaMatch(i) {
-  return { codigo: 'CÓDIGO', equivalencia: 'APRENDIDO', catalogo: 'CATÁLOGO', nuevo: 'NUEVO' }[i.match] || esc(i.match);
+function dudaResponder(id, n) {
+  var o = DUDAS[id].opciones[n];
+  dudaGuardar(id, o.quitar ? { quitar: true } : {
+    producto: o.producto, categoria: o.categoria || '', subcategoria: o.subcategoria || '',
+    presentacion: o.presentacion || ''
+  });
 }
 
-// Cambiar el producto solo actualiza el estado y la etiqueta, sin volver a
-// pintar el modal (si se repinta, el input pierde el foco al escribir).
-function pendCambiarProducto(n, valor) {
-  var i = pendEdit.items[n];
-  i.producto = valor;
-  var original = PEND[pendId].items[n];
-  if (valor.trim() === original.producto) i.match = original.match;
-  else i.match = pendNombresConocidos().indexOf(valor.trim()) !== -1 ? 'catalogo' : 'nuevo';
-  var badge = document.getElementById('pend-match-' + n);
-  if (badge) { badge.className = 'pend-match ' + i.match; badge.textContent = pendEtiquetaMatch(i); }
+function dudaResponderOtro(id) {
+  var input = document.getElementById('duda-otro-' + id);
+  var nombre = (input && input.value || '').trim();
+  if (!nombre) { if (input) input.focus(); return; }
+  // Si el nombre ya existe, se hereda su categoría
+  var conocido = CATALOGO.concat(TICKETS).find(function(r) { return r.producto === nombre; });
+  var base = DUDAS[id].opciones[0] || {};
+  dudaGuardar(id, {
+    producto: nombre,
+    categoria: conocido ? conocido.categoria : (base.categoria || 'Por identificar'),
+    subcategoria: conocido ? (conocido.subcategoria || '') : (base.subcategoria || '')
+  });
 }
 
-function pendElegir(n, nombre) {
-  var input = document.getElementById('pend-prod-' + n);
-  if (input) input.value = nombre;
-  pendCambiarProducto(n, nombre);
-  pendEdit.items[n].confianza = 'alta';
-  var card = document.getElementById('pend-item-' + n);
-  if (card) card.classList.remove('baja');
-}
-
-function pendQuitarItem(n, quitar) {
-  pendEdit.items[n].quitado = quitar;
-  var card = document.getElementById('pend-item-' + n);
-  if (card) card.classList.toggle('quitado', quitar);
-  pendRefrescarSuma();
-}
-
-function pendRefrescarSuma() {
-  var el = document.getElementById('pend-suma');
-  if (!el || !pendEdit) return;
-  var suma = pendSuma(pendEdit);
-  var dif = Math.round(((pendEdit.total || 0) - suma) * 100) / 100;
-  el.innerHTML = formatearPrecio(suma) + (Math.abs(dif) <= 0.05
-    ? ' <span style="color:var(--green)">✓</span>'
-    : ' <span style="color:#f5a623">(difiere ' + formatearPrecio(dif) + ')</span>');
-}
-
-function pendVerFotos(btn) {
-  var cont = document.getElementById('pend-fotos');
-  if (!cont || !pendId) return;
-  btn.disabled = true;
-  btn.textContent = 'Cargando foto…';
-  window._fbGet('pipeline/imagenes/' + pendId).then(function(d) {
+function dudaVerFoto(id, btn) {
+  var cont = document.getElementById('duda-foto-' + id);
+  var foto = (DUDAS[id].fotos || [])[0];
+  if (!cont || !foto) return;
+  btn.textContent = 'Cargando…';
+  window._fbGet('pipeline/imagenes/' + foto).then(function(d) {
     var imgs = (d && d.imagenes) || [];
-    cont.innerHTML = imgs.map(function(b64) { return '<img src="data:image/jpeg;base64,' + b64 + '">'; }).join('') ||
-      '<div class="pend-card-sub">Sin foto.</div>';
+    cont.innerHTML = imgs.map(function(b64) { return '<img class="duda-img" src="data:image/jpeg;base64,' + b64 + '">'; }).join('') ||
+      '<div class="tk-sub">Sin foto.</div>';
     btn.style.display = 'none';
   });
 }
 
-function pendMostrarToast(texto) {
+function toast(texto) {
   var t = document.createElement('div');
-  t.className = 'pend-toast';
+  t.className = 'toast';
   t.textContent = texto;
   document.body.appendChild(t);
-  setTimeout(function() { t.remove(); }, 3200);
-}
-
-function pendAprobar() {
-  var t = pendEdit;
-  var vivos = (t.items || []).filter(function(i) { return !i.quitado; });
-  if (!vivos.length) { alert('El ticket no tiene artículos. Usa "Quitar ticket".'); return; }
-  if (vivos.some(function(i) { return !String(i.producto || '').trim(); })) {
-    alert('Hay artículos sin nombre de producto.'); return;
-  }
-  var dif = Math.round(((t.total || 0) - pendSuma(t)) * 100) / 100;
-  if (Math.abs(dif) > 0.5 && !confirm('La suma de artículos difiere del total por ' + formatearPrecio(dif) + '. ¿Aprobar de todos modos?')) return;
-  var id = pendId;
-  t.aprobado_en = new Date().toISOString();
-  window._fbWrite('pipeline/aprobados/' + id, t)
-    .then(function() { return window._fbWrite('pipeline/pendientes/' + id, null); })
-    .then(function() {
-      delete PEND[id];
-      pendCerrar();
-      pendActualizarTab();
-      pendRender();
-      pendMostrarToast('✓ Aprobado. Se guarda al correr el pipeline en la laptop.');
-    })
-    .catch(function(e) { alert('No se pudo aprobar: ' + e.message); });
-}
-
-function pendQuitar() {
-  if (!confirm('¿Quitar este ticket? No se registra (queda en descartados 30 días por si acaso).')) return;
-  var id = pendId;
-  var t = PEND[id];
-  t.quitado_en = new Date().toISOString();
-  window._fbWrite('pipeline/descartados/' + id, t)
-    .then(function() { return window._fbWrite('pipeline/pendientes/' + id, null); })
-    .then(function() {
-      delete PEND[id];
-      pendCerrar();
-      pendActualizarTab();
-      pendRender();
-      pendMostrarToast('Ticket quitado.');
-    })
-    .catch(function(e) { alert('No se pudo quitar: ' + e.message); });
+  setTimeout(function() { t.remove(); }, 2800);
 }
 
 cargarDatos()
@@ -2639,15 +2526,15 @@ cargarDatos()
     document.getElementById('header-sub').textContent =
       SESIONES.length + ' tickets · ' + TICKETS.length + ' artículos · ' + CATALOGO.length + ' en catálogo';
     inicializar();
-    // Solo el conteo para la pestaña; las imágenes se bajan al abrir un ticket
-    pendCargar();
+    // Solo el conteo para la pestaña; las fotos se bajan al pedirlas
+    dudasCargar();
   })
   .catch(function(err) {
     var ol = document.getElementById('loading-overlay');
     if (ol) ol.innerHTML =
       '<div style="text-align:center;padding:32px;max-width:420px;">' +
       '<div style="font-size:32px;margin-bottom:16px;">⚠️</div>' +
-      '<div style="font-family:DM Serif Display,serif;font-size:20px;color:var(--accent);margin-bottom:12px;">Error al cargar datos</div>' +
+      '<div style="font-family:inherit;font-size:20px;color:var(--accent);margin-bottom:12px;">Error al cargar datos</div>' +
       '<div style="font-size:12px;color:var(--text2);margin-bottom:8px;">' + err.message + '</div>' +
       '<div style="font-size:11px;color:var(--text3);">Revisa la conexión a internet y vuelve a abrir la app. Los datos están en Firebase (compras-visor).</div>' +
       '</div>';
