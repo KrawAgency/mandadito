@@ -48,7 +48,7 @@ foto con el pipeline de `tools/`.
 Buscar por el encabezado `// ═══` de cada módulo (los números de línea cambian):
 
 - `<script type="module">`: inicializa Firebase y expone `_fbGet`, `_fbWrite` (set de un nodo; `null` borra), `_fbSet`/`_fbListen` (lista).
-- Diseño: paleta del logo en `:root` (crema, naranja `--accent`, café), tipografía Nunito, logo en `logo-icono.png` y `logo-texto.png` (recortes de `logo-completo.png`). Las vistas de Tickets, Catálogo y Resumen son tarjetas, no tablas.
+- Diseño: paleta del logo en `:root` (crema, naranja `--accent`, café) y paleta oscura en `@media (prefers-color-scheme: dark)` y `:root[data-theme="dark"]`; el botón 🌙/☀️ guarda la elección en `localStorage` (`tema`). Las imágenes que cambian por modo llevan `solo-claro` / `solo-oscuro`, tipografía Nunito, logo en `logo-icono.png` y `logo-texto.png` (recortes de `logo-completo.png`). Las vistas de Tickets, Catálogo y Resumen son tarjetas, no tablas.
 - `CONFIGURACIÓN DE TIENDAS`: `CONFIG_TIENDAS` (clave, etiqueta, color). Una tienda nueva se agrega aquí y en `tools/comun.py` (`TIENDAS`).
 - `CARGA DE DATOS`: `cargarDatos()` llena `TICKETS`, `CATALOGO`, `SESIONES` y los ordena por fecha (`fechaISO`).
 - `CONSTRUCCIÓN DE LA UI`: tablas, `SECCIONES` (pestañas), `actualizarSeccion`, `navegar`.

@@ -3,6 +3,10 @@
 <head>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#EE5A1F">
+<script>
+  // Tema elegido a mano (si no hay, sigue al sistema). Va aquí arriba para que no parpadee.
+  try { var t = localStorage.getItem('tema'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>🛒 Mandadito</title>
@@ -51,7 +55,40 @@
     --red: #D63B2F; --purple: #7B5BD6; --blue: #2F6FDB; --warn: #B86E00;
     --teal: #13998F; --text: #2B1A14; --text2: #6B5246; --text3: #A08877;
     --sombra: 0 2px 10px rgba(120,60,20,0.08);
+    --toast-bg: #2B1A14; --toast-fg: #FFFFFF;
     --tab-height: 64px;
+    color-scheme: light;
+  }
+  /* Modo oscuro: sigue al sistema salvo que se elija a mano (data-theme) */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1A1310; --surface: #241B17; --surface2: #2E231E;
+      --border: #3D2F28; --accent: #FF7438; --accent-dark: #FF9A66; --green: #52C878;
+      --red: #FF6B5E; --purple: #AE92FF; --blue: #6FA6FF; --warn: #F2AE45;
+      --teal: #45C9BD; --text: #F6EAE0; --text2: #CDB8AA; --text3: #9C8678;
+      --sombra: 0 2px 12px rgba(0,0,0,0.35);
+      --toast-bg: #F6EAE0; --toast-fg: #1A1310;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1A1310; --surface: #241B17; --surface2: #2E231E;
+    --border: #3D2F28; --accent: #FF7438; --accent-dark: #FF9A66; --green: #52C878;
+    --red: #FF6B5E; --purple: #AE92FF; --blue: #6FA6FF; --warn: #F2AE45;
+    --teal: #45C9BD; --text: #F6EAE0; --text2: #CDB8AA; --text3: #9C8678;
+    --sombra: 0 2px 12px rgba(0,0,0,0.35);
+    --toast-bg: #F6EAE0; --toast-fg: #1A1310;
+    color-scheme: dark;
+  }
+  /* Logotipo y etiquetas de tienda según el modo */
+  .solo-oscuro { display: none !important; }
+  :root[data-theme="dark"] .solo-claro { display: none !important; }
+  :root[data-theme="dark"] .solo-oscuro { display: block !important; }
+  :root[data-theme="dark"] .badge { filter: brightness(1.5) saturate(0.9); }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .solo-claro { display: none !important; }
+    :root:not([data-theme="light"]) .solo-oscuro { display: block !important; }
+    :root:not([data-theme="light"]) .badge { filter: brightness(1.5) saturate(0.9); }
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { background: var(--bg); color: var(--text); font-family: 'Nunito', system-ui, sans-serif; font-size: 15px; }
@@ -387,7 +424,7 @@
   .duda-otro { display:grid; grid-template-columns:1fr auto; gap:8px; }
   .duda-foto-btn { background:none; border:none; color:var(--accent-dark); font-weight:800; font-size:13px; cursor:pointer; text-align:left; padding:0; }
   .duda-img { width:100%; border-radius:10px; margin-top:4px; display:block; }
-  .toast { position:fixed; left:50%; bottom:calc(var(--tab-height) + 16px); transform:translateX(-50%); background:var(--text); color:#fff; padding:10px 16px; border-radius:12px; font-size:14px; font-weight:700; z-index:950; box-shadow:0 8px 28px rgba(120,60,20,0.25); max-width:90vw; }
+  .toast { position:fixed; left:50%; bottom:calc(var(--tab-height) + 16px); transform:translateX(-50%); background:var(--toast-bg); color:var(--toast-fg); padding:10px 16px; border-radius:12px; font-size:14px; font-weight:700; z-index:950; box-shadow:0 8px 28px rgba(120,60,20,0.25); max-width:90vw; }
   @media (max-width: 600px) {
     .seccion-bloque { padding:10px !important; padding-bottom:calc(var(--tab-height) + 10px) !important; }
     .edit-overlay { padding:0; }
@@ -401,11 +438,15 @@
   <div class="header-left">
     <img src="logo-icono.png" class="header-icono" alt="">
     <div>
-      <img src="logo-texto.png" class="header-texto" alt="Mandadito">
+      <img src="logo-texto.png" class="header-texto solo-claro" alt="Mandadito">
+      <img src="logo-texto-claro.png" class="header-texto solo-oscuro" alt="Mandadito">
       <span class="header-sub" id="header-sub">cargando…</span>
     </div>
   </div>
-  <button class="icon-btn" onclick="exportarCSV()" title="Descargar todo en CSV">⬇ CSV</button>
+  <div style="display:flex;gap:6px;">
+    <button class="icon-btn" id="btn-tema" onclick="temaAlternar()" title="Cambiar entre modo claro y oscuro">🌙</button>
+    <button class="icon-btn" onclick="exportarCSV()" title="Descargar todo en CSV">⬇ CSV</button>
+  </div>
 </header>
 
 <!-- Loading overlay -->
@@ -448,6 +489,34 @@ var CONFIG_TIENDAS = {
   gomart:    { clave:'gomart',    etiqueta:'GoMart',        color:'#6F6259', emoji:'🏪' },
   velvet:    { clave:'velvet',    etiqueta:'Papelería Velvet', color:'#7A5BC8', emoji:'✏️' },
 };
+
+// ── MODO CLARO / OSCURO ──────────────────────────────────────
+function temaActual() {
+  var t = document.documentElement.getAttribute('data-theme');
+  if (t) return t;
+  return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+function temaPintar() {
+  var oscuro = temaActual() === 'dark';
+  var btn = document.getElementById('btn-tema');
+  if (btn) btn.textContent = oscuro ? '☀️' : '🌙';
+  var meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', oscuro ? '#1A1310' : '#EE5A1F');
+}
+
+function temaAlternar() {
+  var nuevo = temaActual() === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', nuevo);
+  try { localStorage.setItem('tema', nuevo); } catch (e) {}
+  temaPintar();
+}
+
+if (window.matchMedia) {
+  var mqOscuro = window.matchMedia('(prefers-color-scheme: dark)');
+  if (mqOscuro.addEventListener) mqOscuro.addEventListener('change', temaPintar);
+}
+temaPintar();
 
 // ── GUÍA DE USO (estática) ────────────────────────────────────
 const GUIA = [
@@ -2524,7 +2593,7 @@ cargarDatos()
     document.getElementById('loading-overlay').style.display = 'none';
     document.getElementById('sheetsContainer').style.display = '';
     document.getElementById('header-sub').textContent =
-      SESIONES.length + ' tickets · ' + TICKETS.length + ' artículos · ' + CATALOGO.length + ' en catálogo';
+      SESIONES.length + ' tickets · ' + TICKETS.length + ' artículos';
     inicializar();
     // Solo el conteo para la pestaña; las fotos se bajan al pedirlas
     dudasCargar();
