@@ -1642,7 +1642,9 @@ function editMostrarConsistencia(datos, nombreOriginal, nombreNuevo, enTickets, 
 function editEscribir(datos, todos, nombreOriginal) {
   if (!window._fbWrite) { alert('Firebase no está listo'); return; }
   var key = datos._key;
-  var payload = Object.assign({}, datos);
+  // Se parte del registro original para no perder campos que el formulario
+  // no muestra (codigo, sesion, textoTicket): _fbWrite reemplaza el nodo completo.
+  var payload = Object.assign({}, editRegistro, datos);
   delete payload._key;
 
   if (todos) {
