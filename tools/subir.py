@@ -44,7 +44,8 @@ CAMPOS_TICKET = ("tienda", "sucursal", "fecha", "hora", "subtotal", "total",
                  "duplicadoDe", "reemplaza", "problemas", "avisos", "dudas", "fotos")
 CAMPOS_ITEM = ("texto", "codigo", "cantidad", "importe", "descuento", "promo",
                "precio_unitario", "granel", "producto", "categoria", "subcategoria",
-               "presentacion", "match", "confianza", "notas", "candidatos", "sugerido")
+               "presentacion", "match", "confianza", "notas", "candidatos", "sugerido",
+               "preguntar")
 
 
 def id_firebase(id_):

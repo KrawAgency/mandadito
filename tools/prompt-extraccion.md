@@ -120,6 +120,16 @@ Anota en `tandas.md` qué grupos quedaron.
   el texto está truncado, borroso o el match es una suposición. Con
   `"baja"` igual da tu mejor propuesta.
 - `notas`: corto. Para granel "0.625kg · $55.00/kg".
+- `preguntar` (opcional): solo cuando el texto del ticket puede ser
+  productos **distintos** y equivocarse cambia la comparación de precios
+  ("MILANESA" a $250/kg: ¿pollo o res?; "SC DESL 1.": ¿1 L o 1.5 L?). No
+  para dudas de variante menor ni para todo lo de confianza baja: Fernando
+  no revisa tickets, solo contesta estas preguntas. Formato:
+  `{"porque": "¿De pollo o de res?", "opciones": [{"producto": "...",
+  "categoria": "...", "subcategoria": "..."}, ...]}`. Una opción
+  `{"quitar": true, "etiqueta": "No contarlo"}` sirve para algo que no debe
+  registrarse. Antes de preguntar, revisa si la tabla de equivalencias ya
+  tiene ese texto como `confirmada`.
 
 ### Reglas de nombres (de "Instrucciones Registro Compras")
 

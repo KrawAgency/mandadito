@@ -28,6 +28,8 @@ deducir de los propios registros.
      esos días trae el precio por kilo en lugar del importe.
   8. "Agua a granel" de Pachamama era el ticket cortado ("AGUA" a $75-105/kg):
      es aguacate.
+  9. Granel capturado a mano con el precio por kilo en `precio` y el importe
+     en notas ("$59.90/kg · total $17.67"): `precio` pasa a ser el importe.
 
 Uso:
     python limpiar_historico.py            (modo prueba: muestra y no escribe)
@@ -178,6 +180,13 @@ def main():
         if c["producto"] == "Agua a granel":
             cambios[f"catalogo/{k}"] = None
             bitacora["8_agua_aguacate"].append(f"catalogo/{k}")
+
+    # 9. Precio por kilo en lugar del importe
+    for k, t in vivos.items():
+        m = re.search(r"\$(\d+(?:\.\d+)?)/kg · total \$(\d+(?:\.\d+)?)", t.get("notas") or "")
+        if m and f"tickets/{k}" not in cambios and abs(float(m.group(1)) - (t.get("precio") or 0)) < 0.01:
+            cambios[f"tickets/{k}/precio"] = float(m.group(2))
+            bitacora["9_precio_kilo_a_importe"].append(f"{k} {t['producto']}: {t['precio']} -> {m.group(2)}")
 
     # --- Reporte ---
     for nombre_regla, items in bitacora.items():
