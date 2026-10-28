@@ -453,6 +453,14 @@ function cargarDatos() {
           ? Object.entries(rawSesiones).filter(function(e) { return e[1] && e[1].tienda; }).map(function(e) { return Object.assign({_key: e[0]}, e[1]); })
           : [];
 
+        // Lo más reciente primero. Las fechas vienen como DD/MM/AAAA y
+        // compararlas como texto las desordenaba.
+        TICKETS.sort(function(a, b) {
+          return fechaISO(b.fecha).localeCompare(fechaISO(a.fecha)) ||
+            (a.sesion || a.tienda).localeCompare(b.sesion || b.tienda);
+        });
+        SESIONES.sort(function(a, b) { return fechaISO(b.fecha).localeCompare(fechaISO(a.fecha)); });
+
         setLoadingMsg('Listo', 100);
         resolve();
       }).catch(reject);
@@ -464,6 +472,13 @@ function cargarDatos() {
 // ══════════════════════════════════════════════════════════════
 // FUNCIONES UTILITARIAS
 // ══════════════════════════════════════════════════════════════
+
+// "DD/MM/AAAA" -> "AAAA-MM-DD" para ordenar y comparar fechas
+function fechaISO(fecha) {
+  var m = String(fecha || '').match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (!m) return String(fecha || '');
+  return m[3] + '-' + ('0' + m[2]).slice(-2) + '-' + ('0' + m[1]).slice(-2);
+}
 
 // Formatea un número como precio en pesos mexicanos
 function formatearPrecio(valor) {
@@ -501,31 +516,6 @@ function obtenerClaseNota(nota) {
   return '';
 }
 
-// ══════════════════════════════════════════════════════════════
-// CÁLCULO DE RESUMEN — se deriva de TICKETS, no se mantiene a mano
-// ══════════════════════════════════════════════════════════════
-function calcularResumenPorTienda() {
-  var agrupado = {};
-
-  TICKETS.filter(function(t) { return t.tipo === 'compra'; })
-    .forEach(function(ticket) {
-      var clave = ticket.tienda + '|' + ticket.fecha;
-      if (!agrupado[clave]) {
-        agrupado[clave] = {
-          tienda: ticket.tienda,
-          fecha: ticket.fecha,
-          total: 0,
-          articulos: 0,
-        };
-      }
-      agrupado[clave].total += ticket.precio * ticket.cantidad;
-      agrupado[clave].articulos += 1;
-    });
-
-  return Object.values(agrupado).sort(function(a, b) {
-    return a.fecha.localeCompare(b.fecha);
-  });
-}
 
 // ══════════════════════════════════════════════════════════════
 // CONSTRUCCIÓN DE LA UI
@@ -586,7 +576,8 @@ function renderTablaTickets(filtroTexto, filtroTienda) {
   var seccionActual = '';
 
   datos.forEach(function(ticket) {
-    var seccionClave = ticket.tienda + '|' + ticket.fecha;
+    // Con sesión, cada ticket va en su propio grupo aunque haya dos el mismo día
+    var seccionClave = ticket.sesion || (ticket.tienda + '|' + ticket.fecha);
     var config = CONFIG_TIENDAS[ticket.tienda] || {};
     var etiquetaTienda = config.etiqueta || ticket.tienda;
 
@@ -829,7 +820,7 @@ function exportarCSV() {
   var url = URL.createObjectURL(blob);
   var link = document.createElement('a');
   link.href = url;
-  link.download = 'compras_v19.csv';
+  link.download = 'mandadito_' + new Date().toISOString().slice(0, 10) + '.csv';
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
@@ -2288,7 +2279,7 @@ cargarDatos()
     document.getElementById('loading-overlay').style.display = 'none';
     document.getElementById('sheetsContainer').style.display = '';
     document.getElementById('header-sub').textContent =
-      'v30 · ' + TICKETS.length + ' tickets · ' + CATALOGO.length + ' en catálogo';
+      SESIONES.length + ' tickets · ' + TICKETS.length + ' artículos · ' + CATALOGO.length + ' en catálogo';
     inicializar();
   })
   .catch(function(err) {
@@ -2298,7 +2289,7 @@ cargarDatos()
       '<div style="font-size:32px;margin-bottom:16px;">⚠️</div>' +
       '<div style="font-family:DM Serif Display,serif;font-size:20px;color:var(--accent);margin-bottom:12px;">Error al cargar datos</div>' +
       '<div style="font-size:12px;color:var(--text2);margin-bottom:8px;">' + err.message + '</div>' +
-      '<div style="font-size:11px;color:var(--text3);">Revisa que el Google Sheet esté publicado como CSV y que los GIDs sean correctos.</div>' +
+      '<div style="font-size:11px;color:var(--text3);">Revisa la conexión a internet y vuelve a abrir la app. Los datos están en Firebase (compras-visor).</div>' +
       '</div>';
     console.error('cargarDatos error:', err);
   });
